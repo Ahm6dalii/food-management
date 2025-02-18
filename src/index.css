@@ -1,0 +1,25 @@
+/*! Auth layout css  */
+.authentication-container{
+    background-image: url('../src/assets/bg-food.png');
+    background-position: center center;
+    background-size: cover;
+}
+
+.container-fluid.overlay{
+    background: linear-gradient(51.22deg, rgba(47, 140, 96, 0.63) -22.39%, rgba(0, 0, 0, 0.6237) 61.76%);
+}
+
+/*! utilies*/
+.bg-cus-primary{
+    background-color:rgba(74, 163, 90, 1);
+}
+.text-cus-primary{
+    color:rgba(74, 163, 90, 1);
+}
+.btn-main{
+    --bs-btn-color: #fff !important;
+    --bs-btn-bg: rgba(74, 163, 90, 1) !important;
+    --bs-btn-border-color: rgba(74, 163, 90, 1) !important;
+    --bs-btn-hover-color: #fff !important;
+    --bs-btn-hover-bg: rgb(20, 102, 64,1) !important;
+}
