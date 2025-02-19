@@ -25,7 +25,7 @@ const Register = () => {
     try {
       const res = await axios.post(`${api}/api/v1/Users/Register`, data)
       toastify('success', "Register Successfully")
-      navigate('/');
+      navigate('/verify-account');
     } catch (error) {
       console.log(error);
       toastify('error', error.response.data.message)
