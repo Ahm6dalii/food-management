@@ -1,34 +1,54 @@
 import { createBrowserRouter,RouterProvider } from 'react-router-dom'
 import './App.css'
-import AuthLayout from './shared/AuthLayout/AuthLayout'
-import Login from './Authentication/Login/Login';
-import Register from './Authentication/Register/Register';
-import ResetPass from './Authentication/Reset-pass/ResetPass';
-import MasterLayout from './shared/MasterLayout/MasterLayout';
-import CategoriesList from './Categories/CategoriesList/CategoriesList';
-import CategoriesData from './Categories/CategoriesData/CategoriesData';
-import { RecipeList } from './Recpies/RecipeList/RecipeList';
-import RecipeData from './Recpies/RecipeData/RecipeData';
-import NotFound from './shared/NotFound/NotFound';
-import FogetPass from './Authentication/Forget-pass/FogetPass';
-import Dashboard from './Dashboard/Dashboard';
-import Toastifiy from './shared/Toastify/Toastifiy';
-import VerifyAccount from './Authentication/Verify-account/VerifyAccount';
+import AuthLayout from './Modules/shared/AuthLayout/AuthLayout'
+import Login from './Modules/Authentication/Login/Login';
+import Register from './Modules/Authentication/Register/Register';
+import ResetPass from './Modules/Authentication/Reset-pass/ResetPass';
+import MasterLayout from './Modules/shared/MasterLayout/MasterLayout';
+import CategoriesList from './Modules/Categories/CategoriesList/CategoriesList';
+import CategoriesData from './Modules/Categories/CategoriesData/CategoriesData';
+import { RecipeList } from './Modules/Recpies/RecipeList/RecipeList';
+import RecipeData from './Modules/Recpies/RecipeData/RecipeData';
+import NotFound from './Modules/shared/NotFound/NotFound';
+import FogetPass from './Modules/Authentication/Forget-pass/FogetPass';
+import Dashboard from './Modules/Dashboard/Dashboard';
+import Toastifiy from './Modules/shared/Toastify/Toastifiy';
+import VerifyAccount from './Modules/Authentication/Verify-account/VerifyAccount';
+import {  useEffect, useState } from 'react';
+import { jwtDecode } from 'jwt-decode';
+import ProtectedRoute from './Modules/shared/ProtectedRoute/ProtectedRoute';
+import Users from './Modules/Users/Users';
 
 function App() {
+  const[loginData,setLoginData]=useState(null)
+
+    const SaveLoginData=()=>{
+      const data=localStorage.getItem('token')
+      const loginDataDecode= jwtDecode(data);
+      console.log(loginDataDecode);
+      
+      setLoginData(loginDataDecode)
+    }
+
+    useEffect(()=>{
+      if(localStorage.getItem('token')!=null){
+        SaveLoginData()}
+    },[])
+
 const router=createBrowserRouter([
-  {patth:'/',element:<AuthLayout/>,errorElement:<NotFound/>,children:[
-    {index:true,element:<Login/>},
+  {patth:'/',element:<AuthLayout />,errorElement:<NotFound/>,children:[
+    {index:true,element:<Login SaveLoginData={SaveLoginData}/>},
     {path:'register',element:<Register/>},
     {path:'forget-pass',element:<FogetPass/>},
     {path:'reset-pass',element:<ResetPass/>},
     {path:'verify-account',element:<VerifyAccount/>},
   ]},
-  {path:'/dashboard',element:<MasterLayout/>,errorElement:<NotFound/>,children:[
+  {path:'/dashboard',element:<ProtectedRoute><MasterLayout loginData={loginData} saveLoginData={SaveLoginData} /></ProtectedRoute>,errorElement:<NotFound/>,children:[
     {index:true,element:<Dashboard/>},
-    {path:'categories-list',element:<CategoriesList/>},
+    {path:'users',element:<Users/>},
+    {path:'categories',element:<CategoriesList/>},
     {path:'categories-data',element:<CategoriesData/>},
-    {path:'recipies-list',element:<RecipeList/>},
+    {path:'recipies',element:<RecipeList/>},
     {path:'recipies-data',element:<RecipeData/>},
   ]}
 ])

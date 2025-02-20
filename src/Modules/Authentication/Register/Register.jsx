@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
-import { toastify } from '../../Utils/toastifiy';
-import logo from '../../assets/logo/logo1.png'
-import emailIcon from '../../assets/icons/phone.svg'
-import passIcon from '../../assets/icons/lock.svg'
-import { api } from '../../Utils/Api';
+import logo from '../../../assets/logo/logo1.png'
+import emailIcon from '../../../assets/icons/phone.svg'
+import passIcon from '../../../assets/icons/lock.svg'
+import { toastify } from '../../../Utils/toastifiy'
+import { api } from '../../../Utils/Api'
 import axios from 'axios';
 
 const Register = () => {

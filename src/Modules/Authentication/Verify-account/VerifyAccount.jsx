@@ -1,13 +1,12 @@
 import React, { useState } from 'react'
-import logo from '../../assets/logo/logo1.png'
-import emailIcon from '../../assets/icons/phone.svg'
-import passIcon from '../../assets/icons/lock.svg'
+import logo from '../../../assets/logo/logo1.png'
+import emailIcon from '../../../assets/icons/phone.svg'
+import passIcon from '../../../assets/icons/lock.svg'
 import {  useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import axios from 'axios'
-import { toastify } from '../../Utils/toastifiy'
-import { api } from '../../Utils/Api'
-
+import { toastify } from '../../../Utils/toastifiy'
+import { api } from '../../../Utils/Api'
 
 const VerifyAccount = () => {
     const { register, formState: { errors }, handleSubmit } = useForm();

@@ -23,3 +23,49 @@
     --bs-btn-hover-color: #fff !important;
     --bs-btn-hover-bg: rgb(20, 102, 64,1) !important;
 }
+/* ! header  */
+.header-container{
+    background-color:rgba(0, 146, 71, 1);
+    color: #fff;
+}
+.header-img{
+    top:19px
+}
+/*! Pro Sidebar */
+.sidebar-container{
+    min-height: 100vh; 
+}
+.sidebar-container .sidebar-logo{
+    width: 150px;
+    height: 150px;
+}
+.sidebar-container .sidebar-logo.css-1t8x7v1 >.ps-menu-button:hover {
+    background-color: transparent !important;
+    border: none;
+}
+.sidebar-container .sidebar-logo :hover {
+    background-color: transparent !important;
+}
+.sidebar-container .css-1t8x7v1 >.ps-menu-button:hover {
+    background-color: rgba(0, 146, 71, 0.1) !important;
+    border-left: 5px solid rgb(0, 146, 71);
+}
+
+.sidebar-container .css-dip3t8 {
+    background-color: rgba(31, 38, 62, 1);
+    border-top-right-radius: 50px;
+    color: #fff;
+    height: 100vh;
+}
+
+.bill-notification{
+    width: 8px;
+    height: 8px;
+    background-color: red;
+    border: 1px solid #fff;
+    border-radius: 50%;
+    position: absolute;
+    top: 1px;
+    right: 0;
+
+}
