@@ -1,0 +1,26 @@
+import React from 'react'
+
+const Header = ({welcome, title,discribtion ,logo}) => {
+
+  return (
+    <div className='container-fluid header-container px-5 rounded-3'>
+      <div className="row align-item-center">
+        <div className="col-md-8 flex align-content-center">
+        <div className="caption ">
+            <h3>{title.split(" ").slice(0,1).join("")} <span className='fw-light text-light'>{title.split(" ").slice(1).join("")}</span></h3>
+
+            <p className='w-75'>{discribtion}</p>
+        </div>
+        </div>
+        <div className="col-md-4">
+        <div className='img-container '>
+          <img src={logo} className='w-75  position-relative header-img' alt="" />
+        </div>
+        </div>
+      </div>
+    
+    </div>
+  )
+}
+
+export default Header

@@ -1,13 +1,13 @@
 import React, {  useState } from 'react'
-import logo from '../../assets/logo/logo1.png'
-import emailIcon from '../../assets/icons/phone.svg'
-import passIcon from '../../assets/icons/lock.svg'
+import logo from '../../../assets/logo/logo1.png'
+import emailIcon from '../../../assets/icons/phone.svg'
+import passIcon from '../../../assets/icons/lock.svg'
 import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import axios from 'axios'
-import { toastify } from '../../Utils/toastifiy'
-import { api } from '../../Utils/Api'
-const Login = () => {
+import { toastify } from '../../../Utils/toastifiy'
+import { api } from '../../../Utils/Api'
+const Login = ({SaveLoginData}) => {
   const [showPass,setShowPass]=useState(false);
   const {register,formState:{errors},handleSubmit}=useForm();
   const [isLoading,setIsLoading]=useState(false);
@@ -20,6 +20,8 @@ const Login = () => {
     try {
        const res= await axios.post(`${api}/api/v1/Users/Login`,data)
        toastify('success',"Login Successfully")
+        localStorage.setItem('token',res.data.token);
+        SaveLoginData();
        navigate('/dashboard');
     } catch (error) {
       console.log(error);   
