@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import avatar from '../../../assets/avatar.png'
 const Navbar = ({loginData}) => {
   console.log(loginData);
@@ -14,11 +14,11 @@ const Navbar = ({loginData}) => {
             <ul className="navbar-nav ms-auto  align-items-center gap-2">
               <span className='rounded-circle overflow-auto '><img className='w-100' src={avatar} alt="avatar" /></span>
               <li className="nav-item  ">
-                <a className="nav-link active fw-semibold flex " aria-current="page" >{loginData?.userEmail??"username"} <i className='fa fa-angle-down ms-5'></i></a>
+                <a className="nav-link active fw-semibold flex bg-body-tertiary" aria-current="page" >{loginData?.userEmail??"username"} <i className='fa fa-angle-down ms-5'></i></a>
               </li>
             </ul>
             <div className='ms-3 position-relative'>
-            <i class="fa-solid fa-bell"></i>
+            <i className="fa-solid fa-bell"></i>
             <span className='bill-notification'></span>
             </div>
           </div>
