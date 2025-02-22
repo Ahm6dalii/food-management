@@ -11,7 +11,7 @@ import axios from 'axios';
 const Register = () => {
   const [showPass, setShowPass] = useState(false);
   const [showConfirmPass, setConfirmPass] = useState(false);
-  const { register, formState: { errors }, handleSubmit } = useForm();
+  const { register, formState: { errors }, handleSubmit,watch } = useForm();
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const handleShowPass = () => {
@@ -20,7 +20,7 @@ const Register = () => {
   const handleConfirmPass = () => {
     setConfirmPass(prev => !prev)
   }
-  const onSubmit = async (data) => {    
+  const onSubmit = async (data) => {
     setIsLoading(true)
     try {
       const res = await axios.post(`${api}/api/v1/Users/Register`, data)
@@ -53,9 +53,9 @@ const Register = () => {
                     <div className="form-floating">
                       <input {...register('userName', {
                         required: 'UserName is required',
-                        minLength:{
-                          value:3,
-                          message:'UserName must be at least 3 characters'
+                        minLength: {
+                          value: 3,
+                          message: 'UserName must be at least 3 characters'
                         }
                       })} autoComplete="true" type="username" className="form-control" id="username" placeholder="username" />
                       <label htmlFor="username ">UserName</label>
@@ -121,8 +121,8 @@ const Register = () => {
 
               </div>
               <div className="row gx-5">
-              <div className='col-md-6'>
-              <div className={`input-group ${errors.password? ' mb-1' : 'mb-3'}`}>                    <span className="input-group-text"><img src={passIcon} alt="pass icon" className="w-full" /></span>
+                <div className='col-md-6'>
+                  <div className={`input-group ${errors.password ? ' mb-1' : 'mb-3'}`}>                    <span className="input-group-text"><img src={passIcon} alt="pass icon" className="w-full" /></span>
                     <div className="form-floating position-relative">
                       <input {...register('password', {
                         required: 'Password is required',
@@ -139,17 +139,15 @@ const Register = () => {
                   </div>
                   {errors.password && <div className="text-danger mb-3">{errors.password.message} </div>}
                 </div>
-              <div className='col-md-6 '>
-              <div className={`input-group ${errors.confirmPassword? ' mb-1' : 'mb-3'}`}>
-                  <span className="input-group-text"><img src={passIcon} alt="pass icon" className="w-full" /></span>
+                <div className='col-md-6 '>
+                  <div className={`input-group ${errors.confirmPassword ? ' mb-1' : 'mb-3'}`}>
+                    <span className="input-group-text"><img src={passIcon} alt="pass icon" className="w-full" /></span>
                     <div className="form-floating position-relative">
                       <input {...register('confirmPassword', {
                         required: 'Confirm Password is required',
-                        minLength: {
-                          value: 6,
-                          message: 'Password must be at least 6 characters'
-                        }
+                        validate: (value) => value === watch('password') || 'Passwords do not match',
                       })} autoComplete="true" type={showConfirmPass ? "text" : "password"} className="form-control" id="confirm-password" placeholder="Username" />
+
                       <label htmlFor="confirm-password">Confirm Password </label>
                       <button onClick={handleConfirmPass} type='button' className='position-absolute bg-transparent border-0 text-secondary top-50 end-0 me-4 translate-middle-y'>
                         {showConfirmPass ? <i className="fa-solid fa-eye "></i> : <i className="fa-solid fa-eye-slash"></i>}
