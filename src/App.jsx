@@ -3,14 +3,14 @@ import './App.css'
 import AuthLayout from './Modules/shared/AuthLayout/AuthLayout'
 import Login from './Modules/Authentication/Login/Login';
 import Register from './Modules/Authentication/Register/Register';
-import ResetPass from './Modules/Authentication/Reset-pass/ResetPass';
+import ResetPassword from './Modules/Authentication/Reset-password/ResetPassword';
 import MasterLayout from './Modules/shared/MasterLayout/MasterLayout';
 import CategoriesList from './Modules/Categories/CategoriesList/CategoriesList';
 import CategoriesData from './Modules/Categories/CategoriesData/CategoriesData';
 import { RecipeList } from './Modules/Recpies/RecipeList/RecipeList';
 import RecipeData from './Modules/Recpies/RecipeData/RecipeData';
 import NotFound from './Modules/shared/NotFound/NotFound';
-import FogetPass from './Modules/Authentication/Forget-pass/FogetPass';
+import FogetPassword from './Modules/Authentication/Forget-password/FogetPassword';
 import Dashboard from './Modules/Dashboard/Dashboard';
 import Toastifiy from './Modules/shared/Toastify/Toastifiy';
 import VerifyAccount from './Modules/Authentication/Verify-account/VerifyAccount';
@@ -39,8 +39,8 @@ const router=createBrowserRouter([
   {patth:'/',element:<AuthLayout />,errorElement:<NotFound/>,children:[
     {index:true,element:<Login SaveLoginData={SaveLoginData}/>},
     {path:'register',element:<Register/>},
-    {path:'forget-pass',element:<FogetPass/>},
-    {path:'reset-pass',element:<ResetPass/>},
+    {path:'forget-password',element:<FogetPassword/>},
+    {path:'reset-password',element:<ResetPassword/>},
     {path:'verify-account',element:<VerifyAccount/>},
   ]},
   {path:'/dashboard',element:<ProtectedRoute><MasterLayout loginData={loginData} saveLoginData={SaveLoginData} /></ProtectedRoute>,errorElement:<NotFound/>,children:[

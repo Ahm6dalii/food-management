@@ -1,1 +1,0 @@
-export const api= 'https://upskilling-egypt.com:3006'
