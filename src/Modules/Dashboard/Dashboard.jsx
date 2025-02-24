@@ -4,9 +4,9 @@ import Header from './../shared/Header/Header';
 import SubHeader from '../shared/SubHeader/SubHeader';
 const Dashboard = () => {
   const handleBtnAction=()=>{
-      console.log('clicked');
-      
+      console.log('clicked');  
   }
+  
   return (
     <div>
      <Header title="Welcome Upskilling !" discribtion="This is a welcoming screen for the entry of the application , you can now see the options" logo={logo} />
