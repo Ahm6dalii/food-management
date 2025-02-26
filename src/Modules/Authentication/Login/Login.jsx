@@ -52,7 +52,7 @@ const Login = ({SaveLoginData}) => {
                   <div className="form-floating position-relative">
                     <input {...register('password',{required:"Password is Required" })} autoComplete="true" type={showPass?"text":"password"} className="form-control" id="floatingInputGroup1" placeholder="Username" />
                     <label htmlFor="floatingInputGroup1">Password </label>            
-                  <button onClick={handleShowPass} type='button' className='position-absolute bg-transparent border-0 text-secondary top-50 end-0 me-4 translate-middle-y'>
+                  <button onClick={handleShowPass} type='button' className='position-absolute bg-transparent border-0 text-secondary top-50 end-0 me-2 translate-middle-y'>
                     {showPass?<i  className="fa-solid fa-eye "></i>:<i className="fa-solid fa-eye-slash "></i>}
                   </button>
                   </div>

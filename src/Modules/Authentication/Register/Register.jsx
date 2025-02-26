@@ -48,7 +48,7 @@ const Register = () => {
       </div>
       <form onSubmit={handleSubmit(onSubmit)} className="text-secondary ">
 
-        <div className="row gx-5">
+        <div className="row gx-4">
           <div className='col-md-6'>
             <div className={`input-group ${errors?.username ? ' mb-1' : 'mb-3'}`}>
               <span className="input-group-text"><i className="fa-solid fa-user text-secondary"></i></span>
@@ -72,7 +72,7 @@ const Register = () => {
           </div>
         </div>
 
-        <div className="row gx-5">
+        <div className="row gx-4">
 
           <div className='col-md-6'>
             <div className={`input-group ${errors?.country ? ' mb-1' : 'mb-3'}`}>
@@ -98,13 +98,13 @@ const Register = () => {
 
         </div>
 
-        <div className="row gx-5">
+        <div className="row gx-4">
           <div className='col-md-6'>
             <div className={`input-group ${errors?.password ? ' mb-1' : 'mb-3'}`}>                    <span className="input-group-text"><img src={passIcon} alt="pass icon" className="w-full" /></span>
               <div className="form-floating position-relative">
                 <input {...register('password', PASSWORD_VALIDATION)} autoComplete="true" type={showPass ? "text" : "password"} className="form-control" id="floatingInputGroup1" placeholder="Username" />
                 <label htmlFor="floatingInputGroup1">Password </label>
-                <button aria-label={showPass?"Hide password":"Show password"} onClick={handleShowPass} type='button' className='position-absolute bg-transparent border-0 text-secondary top-50 end-0 me-4 translate-middle-y'>
+                <button aria-label={showPass?"Hide password":"Show password"} onClick={handleShowPass} type='button' className='position-absolute bg-transparent border-0 text-secondary top-50 end-0 me-2 translate-middle-y'>
                 <i className={`fa-solid ${showConfirmPass ? 'fa-eye' : 'fa-eye-slash'}`} aria-hidden="true"></i>
                 <span className="visually-hidden">{showPass?"Hide":"Show"}</span>
             </button>
@@ -122,7 +122,7 @@ const Register = () => {
                 })} autoComplete="true" type={showConfirmPass ? "text" : "password"} className="form-control" id="confirm-password" placeholder="Username" />
 
                 <label htmlFor="confirm-password">Confirm Password </label>
-                <button  aria-label={showConfirmPass ? 'Hide password' : 'Show password'} onClick={handleConfirmPass} type='button' className='position-absolute bg-transparent border-0 text-secondary top-50 end-0 me-4 translate-middle-y'>
+                <button  aria-label={showConfirmPass ? 'Hide password' : 'Show password'} onClick={handleConfirmPass} type='button' className=' position-absolute bg-transparent border-0 text-secondary top-50 end-0 me-2 translate-middle-y'>
                   <i className={`fa-solid ${showConfirmPass ? 'fa-eye' : 'fa-eye-slash'}`} aria-hidden="true"></i>
                   <span className="visually-hidden"> {showConfirmPass ? 'Hide' : 'Show'} password </span>
                 </button>
