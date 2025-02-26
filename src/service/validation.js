@@ -2,7 +2,7 @@
 export const EMAIL_VALIDATION={
     required:'Email is required',
     pattern:{
-      value:/^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/,
+      value:/^[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+$/,
       message:'Email is invalid'
     }
   }

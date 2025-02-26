@@ -1,5 +1,6 @@
 import axios from "axios"
 
+ export const mainURL="https://upskilling-egypt.com:3006/" //used in image Url
  export const baseURL="https://upskilling-egypt.com:3006/api/v1/"
 
 //public 
