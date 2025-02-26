@@ -55,8 +55,8 @@ export const RecipeList = () => {
       <div className='searchSection container-fluid my-3'>
         <div className="row">
           {/* Search bar */}
-          <div className="col-md-9 search-tag-box d-flex align-content-center gap-2">
-            <div className="search-bar btn-group  w-75 ">
+          <div className="col-md-8 search-tag-box d-flex align-content-center gap-2">
+            <div className="search-bar btn-group  w-75">
               <div className="input-group rounded  border-1 border ">
                 <span className="input-group-text border-0  bg-transparent" id="search-addon">
                   <i className="fas fa-search"></i>
@@ -78,7 +78,7 @@ export const RecipeList = () => {
           </div>
 
           {/* Select Category */}
-          <div className="col-md-2 select-category ">
+          <div className="col-md-3 select-category ">
             <select className="form-select" aria-label="Default select example">
               <option selected value='d'>Category</option>
               <option value="1">One</option>
@@ -115,7 +115,7 @@ export const RecipeList = () => {
                   <td data-label="Price">{recipe?.price} $</td>
                   <td data-label="Description" className="text-wrap">{recipe?.description}</td>
                   <td data-label="Tag">{recipe?.tag?.name}</td>
-                  <td data-label="Category">{recipe?.category[0]?.name}</td>
+                  <td data-label="Category" className={`${recipe?.category[0]?.name??'text-danger'}`}>{recipe?.category[0]?.name??"none"}</td>
                   <td data-label="Action" className='dropup-center dropup'>
                     <i className="fa fa-ellipsis text-secondary dropup-center dropup" data-bs-toggle="dropdown" />
                     <ul className="dropdown-menu">
