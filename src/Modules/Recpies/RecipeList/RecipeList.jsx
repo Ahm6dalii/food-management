@@ -4,7 +4,7 @@ import Header from './../../shared/Header/Header';
 import logo from './../../../assets/recipe-img.png';
 import NoData from '../../shared/NoData/NoData';
 import ConfirmationDelete from '../../shared/ConfirmationDelete/ConfirmationDelete';
-import { axiosInstancePrivate, baseURL, RECEIPE_URL } from '../../../service/ulrs/urls';
+import { axiosInstancePrivate, baseURL, mainURL, RECEIPE_URL } from '../../../service/ulrs/urls';
 import { toastify } from '../../../service/toastifiy';
 
 export const RecipeList = () => {
@@ -16,13 +16,15 @@ export const RecipeList = () => {
 }
 
   const getRecipes = async () => {
+    console.log(RECEIPE_URL.GET_RECIPE,'sdssas');
+    
     try {
       const res = await axiosInstancePrivate.get(RECEIPE_URL.GET_RECIPE);
       console.log(res?.data?.data);
       setRecipes(res?.data?.data);
     } catch (error) {
+      setRecipes([]);
       console.log(error);
-
     }
   }
 
@@ -109,11 +111,11 @@ export const RecipeList = () => {
               {recipes?.length > 0 ? recipes?.map((recipe) => (
                 <tr key={recipe?.id}>
                   <td data-label="Item Name">{recipe?.name}</td>
-                  <td data-label="Image"><img src={`${baseURL}/${recipe?.imagePath}`} alt="Food Image" className="img-fluid rounded w-100 d-block" style={{ maxWidth: 80 }} /></td>
+                  <td data-label="Image"><img src={`${mainURL}${recipe?.imagePath}`} loading='lazy' alt="Food Image" className="img-fluid rounded w-100 d-block" style={{ maxWidth: 80 }} /></td>
                   <td data-label="Price">{recipe?.price} $</td>
                   <td data-label="Description" className="text-wrap">{recipe?.description}</td>
                   <td data-label="Tag">{recipe?.tag?.name}</td>
-                  <td data-label="Category">{recipe?.category[0].name}</td>
+                  <td data-label="Category">{recipe?.category[0]?.name}</td>
                   <td data-label="Action" className='dropup-center dropup'>
                     <i className="fa fa-ellipsis text-secondary dropup-center dropup" data-bs-toggle="dropdown" />
                     <ul className="dropdown-menu">
