@@ -12,7 +12,7 @@ const Header = ({ title,discribtion ,logo}) => {
         </div>
         <div className="col-md-4">
         <div className='img-container text-end'>
-          <img src={logo} className='w-50  position-relative header-img' alt="" />
+          <img src={logo} className='header-image  position-relative ' alt="header image" />
         </div>
         </div>
       </div>

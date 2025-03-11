@@ -3,9 +3,9 @@ import emailIcon from '../../../assets/icons/phone.svg'
 import {  useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { EMAIL_VALIDATION } from '../../../service/validation'
-import { axiosInstancePrivate, USER_URL } from './../../../service/ulrs/urls';
 import { toastify } from './../../../service/toastifiy';
-
+import { axiosInstancePublic } from '../../../service/api/apiInstance';
+import { USER_URL } from '../../../service/api/apiConfig';
 const FogetPassword = () => {
   const {register,formState:{errors,isSubmitting},setValue,watch,handleSubmit,}= useForm({mode:"onChange"});
   const emailValue=watch("email",'')
@@ -18,7 +18,7 @@ const FogetPassword = () => {
   
   const onSubmit=async(data)=>{
     try {
-       const res= await axiosInstancePrivate.post(USER_URL.FORGET_PASSWORD,data)
+       const res= await axiosInstancePublic.post(USER_URL.FORGET_PASSWORD,data)
        toastify('success',"OTP Send Successfully")
        navigate('/reset-password',{state:{email:data?.email}});
     } catch (error) {

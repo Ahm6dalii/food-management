@@ -4,9 +4,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import emailIcon from '../../../assets/icons/phone.svg'
 import passIcon from '../../../assets/icons/lock.svg'
 import { COUNTRY_VALIDATION, EMAIL_VALIDATION, PASSWORD_VALIDATION, PHONE_VALIDATION, USERNAME_VALIDATION } from '../../../service/validation';
-import { axiosInstancePublic, USER_URL } from '../../../service/ulrs/urls';
 import { toastify } from './../../../service/toastifiy';
-
+import { axiosInstancePublic } from '../../../service/api/apiInstance';
+import { USER_URL } from '../../../service/api/apiConfig';
 const Register = () => {
   const [showPass, setShowPass] = useState(false);
   const [showConfirmPass, setConfirmPass] = useState(false);

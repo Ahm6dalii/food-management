@@ -1,8 +1,15 @@
-import React from 'react'
+import React,{ useState } from 'react'
 import logo from './../../assets/welcomeImg.png'
 import Header from './../shared/Header/Header';
 import SubHeader from '../shared/SubHeader/SubHeader';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+
 const Dashboard = () => {
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
   const handleBtnAction=()=>{
       console.log('clicked');  
   }

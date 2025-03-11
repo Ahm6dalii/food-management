@@ -4,27 +4,41 @@ import Header from './../../shared/Header/Header';
 import logo from './../../../assets/recipe-img.png';
 import NoData from '../../shared/NoData/NoData';
 import ConfirmationDelete from '../../shared/ConfirmationDelete/ConfirmationDelete';
-import { axiosInstancePrivate, baseURL, mainURL, RECEIPE_URL } from '../../../service/ulrs/urls';
 import { toastify } from '../../../service/toastifiy';
+import LoadingScreen from '../../shared/LoadingScreen/LoadingScreen';
+import noDataImg from '../../../assets/nodata.png';
+import { imageURL, RECEIPE_URL } from '../../../service/api/apiConfig';
+import { axiosInstancePrivate } from '../../../service/api/apiInstance';
+import { useNavigate } from 'react-router-dom';
 
 export const RecipeList = () => {
   const [recipes, setRecipes] = useState([]);
+  const[isLoading,setIsLoading]=useState(false)
+  const[currentRecipe,setcurrentRecipe]=useState({})
   const recipeId = useRef()
+  const navigate = useNavigate();
 
-  const handleBtnAction=()=>{
-    console.log('clicked');  
-}
+  const handleAddRecipe=()=>{
+    navigate('/dashboard/recipies-data',{state:'Add'} )   
+    }
+  const handleUpdateRecipe=(recipe)=>{
+    // setcurrentRecipe(recipe)
+    localStorage.setItem('currentRecipe',JSON.stringify(recipe))
+    navigate('/dashboard/recipies-data',{state:'Update'} )    
+    }
 
   const getRecipes = async () => {
     console.log(RECEIPE_URL.GET_RECIPE,'sdssas');
-    
+    setIsLoading(true)
     try {
       const res = await axiosInstancePrivate.get(RECEIPE_URL.GET_RECIPE);
       console.log(res?.data?.data);
       setRecipes(res?.data?.data);
     } catch (error) {
       setRecipes([]);
-      console.log(error);
+      console.log(error||"Faild to get data");
+    }finally{
+      setIsLoading(false)
     }
   }
 
@@ -46,11 +60,12 @@ export const RecipeList = () => {
     getRecipes();
   }, [])
 
+  
   return (
     <div className='overflow-hidden'>
 
       <Header title="Recipes Items" discribtion="You can now add your items that any user can order it from the Application and you can edit" logo={logo} />
-      <SubHeader title="Recipe Table Details" discribtion="You can check all details" btnName="Add New Item" handleBtnAction={handleBtnAction} />
+      <SubHeader title="Recipe Table Details" discribtion="You can check all details" btnName="Add New Item" handleBtnAction={handleAddRecipe} />
 
       <div className='searchSection container-fluid my-3'>
         <div className="row">
@@ -92,8 +107,8 @@ export const RecipeList = () => {
 
       <div className="container mt-4">
 
-        <div className="table-responsive">
-          <table className="table table-striped table-hover text-center align-middle">
+        <div className="table-responsive-lg">
+          <table className="table table-striped table-hover text-center align-middle overflow-x-auto">
 
             <thead className="table-secondary  overflow-visible">
               <tr>
@@ -103,37 +118,38 @@ export const RecipeList = () => {
                 <th scope="col" className="px-1 py-4 ">Description</th>
                 <th scope="col" className="px-1 py-4 ">Tag</th>
                 <th scope="col" className="px-1 py-4 ">Category</th>
-                <th scope="col" className="px-1 py-4 rounded-end-3">s</th>
+                <th scope="col" className="px-1 py-4 rounded-end-3">Actions</th>
               </tr>
             </thead>
 
             <tbody>
+         
               {recipes?.length > 0 ? recipes?.map((recipe) => (
                 <tr key={recipe?.id}>
                   <td data-label="Item Name">{recipe?.name}</td>
-                  <td data-label="Image"><img src={`${mainURL}${recipe?.imagePath}`} loading='lazy' alt="Food Image" className="img-fluid rounded w-100 d-block" style={{ maxWidth: 80 }} /></td>
+                  <td data-label="Image"><img src={` ${recipe?.imagePath? imageURL+recipe?.imagePath:noDataImg}`} loading='lazy' alt="Food Image" className="img-fluid rounded w-100 d-block" style={{ maxWidth: 80 }} /></td>
                   <td data-label="Price">{recipe?.price} $</td>
                   <td data-label="Description" className="text-wrap">{recipe?.description}</td>
                   <td data-label="Tag">{recipe?.tag?.name}</td>
                   <td data-label="Category" className={`${recipe?.category[0]?.name??'text-danger'}`}>{recipe?.category[0]?.name??"none"}</td>
                   <td data-label="Action" className='dropup-center dropup'>
-                    <i className="fa fa-ellipsis text-secondary dropup-center dropup" data-bs-toggle="dropdown" />
+                    <i className="fa fa-ellipsis text-secondary dropup-center dropup cursor-pointer" data-bs-toggle="dropdown" />
                     <ul className="dropdown-menu">
-                      <li><a className="dropdown-item d-flex align-content-center gap-2" href="#"><i className='fa-solid fa-eye text-success'></i> View</a></li>
-                      <li><a className="dropdown-item d-flex align-content-center gap-2" href="#"><i className="fa-solid fa-pen-to-square text-success"></i> Edit</a></li>
-                      <li onClick={() => recipeId.current = recipe?.id}><a className="dropdown-item d-flex align-content-center gap-2" data-bs-toggle="modal" data-bs-target="#exampleModal" href="#"><i className="fa-solid fa-trash-can text-success"></i>delete</a></li>
+                      <li><a className="dropdown-item d-flex align-content-center gap-2 cursor-pointer" ><i className='fa-solid fa-eye text-success'></i> View</a></li>
+                      <li onClick={()=>handleUpdateRecipe(recipe)}><a className="dropdown-item  cursor-pointer d-flex align-content-center gap-2" ><i className="fa-solid fa-pen-to-square text-success"></i> Edit</a></li>
+                      <li onClick={() => recipeId.current = recipe?.id}><a className="dropdown-item cursor-pointer d-flex align-content-center gap-2" data-bs-toggle="modal" data-bs-target="#exampleModal" ><i className="fa-solid fa-trash-can text-success"></i>delete</a></li>
                     </ul>
                   </td>
                 </tr>
               )) : (<tr >
-                <td className='text-center' colSpan={7}><NoData /></td>
+                <td className='text-center ' colSpan={7}>{isLoading?<LoadingScreen/>:<NoData />}</td>
               </tr>)}
             </tbody>
 
           </table>
         </div>
 
-        <ConfirmationDelete id={recipeId?.current} handleDelete={deleteRecipes} />
+        <ConfirmationDelete id={recipeId?.current} handleDelete={deleteRecipes} title={"Recipe"} />
 
       </div>
 

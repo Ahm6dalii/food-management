@@ -4,16 +4,34 @@ import Header from './../../shared/Header/Header';
 import logo from './../../../assets/recipe-img.png';
 import NoData from '../../shared/NoData/NoData';
 import ConfirmationDelete from '../../shared/ConfirmationDelete/ConfirmationDelete';
-import { axiosInstancePrivate, CATEGORY_URL } from '../../../service/ulrs/urls';
 import { toastify } from '../../../service/toastifiy';
+import LoadingScreen from '../../shared/LoadingScreen/LoadingScreen';
+import CategoriesData from '../CategoriesData/CategoriesData';
+import { axiosInstancePrivate } from '../../../service/api/apiInstance';
+import { CATEGORY_URL } from '../../../service/api/apiConfig';
 const CategoriesList = () => {
     const [category, setCategory] = useState([]);
-    const catogeryId=useRef()
-    const handleBtnAction=()=>{
+    const[isLoading,setIsLoading]=useState(false)
+    const [show, setShow] = useState(false);
+    const [mode, setMode] = useState('');
+    
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
+    const catogeryId=useRef()
+    const currentCatogery=useRef()
+    const handleAddCategory=()=>{
+      setMode('Add')
+      handleShow(true)
+    }
+    const handleUpdateCategory=(name)=>{
+      setMode('Update')
+      currentCatogery.current=name
+      handleShow(true)
     }
 
     const getCategory = async () => {
+      setIsLoading(true)
       try {
         const res = await axiosInstancePrivate.get(CATEGORY_URL.GET_CATOGERY);
         console.log(res?.data);
@@ -22,7 +40,7 @@ const CategoriesList = () => {
       } catch (error) {
           console.log(error);
           
-      } 
+      } finally{setIsLoading(false)}
     }
   
     const deleteCategory = async () => {   
@@ -44,7 +62,7 @@ const CategoriesList = () => {
   <div className='overflow-hidden'>
 
     <Header title="Categories Items" discribtion="You can now add your items that any user can order it from the Application and you can edit" logo={logo} />
-    <SubHeader title="Categories Table Details" discribtion="You can check all details" btnName="Add New Category" handleBtnAction={handleBtnAction} />
+    <SubHeader title="Categories Table Details" discribtion="You can check all details" btnName="Add New Category" handleBtnAction={handleAddCategory} />
     
     <div className='searchSection container-fluid my-3'>
       <div className="row">
@@ -80,8 +98,8 @@ const CategoriesList = () => {
     </div>
 
     <div className="container mt-4">
-      <div className="table-responsive">
-        <table className="table table-striped  table-hover text-center align-middle">
+      <div className="table-responsive-lg">
+        <table className="table table-striped  table-hover text-center align-middle overflow-x-auto">
 
           <thead className="table-secondary overflow-visible">
             <tr>
@@ -97,19 +115,19 @@ const CategoriesList = () => {
               <tr key={category?.id}>
                 <td data-label="Item Name">{category?.id}</td>
                 <td data-label="Price">{category?.name} </td>
-                <td data-label="Description" className="text-wrap">{new Date(category?.creationDate).toLocaleString()}</td>
+                <td data-label="Create At" className="text-wrap">{new Date(category?.creationDate).toLocaleString()}</td>
 
                 <td data-label="Action" className='dropup-center dropup z-3'>
-                  <i className="fa fa-ellipsis text-secondary dropup-center dropup " data-bs-toggle="dropdown" />
+                  <i className="fa fa-ellipsis text-secondary dropup-center dropup cursor-pointer " data-bs-toggle="dropdown" />
                   <ul className="dropdown-menu  z-3 position-absolute">
-                    <li><a className="dropdown-item d-flex align-content-center gap-2" href="#"><i className='fa-solid fa-eye text-success'></i> View</a></li>
-                    <li><a className="dropdown-item d-flex align-content-center gap-2" href="#"><i className="fa-solid fa-pen-to-square text-success"></i> Edit</a></li>
-                    <li onClick={()=>catogeryId.current=category?.id}><a className="dropdown-item d-flex align-content-center gap-2" data-bs-toggle="modal" data-bs-target="#exampleModal" href="#"><i className="fa-solid fa-trash-can text-success"></i>delete</a></li>
+                    <li><a className="dropdown-item d-flex align-content-center gap-2 cursor-pointer" href="#"><i className='fa-solid fa-eye text-success'></i> View</a></li>
+                    <li onClick={()=>handleUpdateCategory(category)}><a className="dropdown-item cursor-pointer d-flex align-content-center gap-2"><i className="fa-solid fa-pen-to-square text-success"></i> Edit</a></li>
+                    <li onClick={()=>catogeryId.current=category?.id}><a className="dropdown-item  cursor-pointerd-flex align-content-center gap-2" data-bs-toggle="modal" data-bs-target="#exampleModal" href="#"><i className="fa-solid fa-trash-can text-success"></i>delete</a></li>
                   </ul>
                 </td>
               </tr>
             )) : (<tr > 
-              <td className='text-center' colSpan={7}><NoData /></td>
+              <td className='text-center' colSpan={7}>{isLoading?<LoadingScreen/>:<NoData />} </td>
               </tr>)}
           </tbody>
 
@@ -117,8 +135,8 @@ const CategoriesList = () => {
       </div>
     </div>
 
-    <ConfirmationDelete id={catogeryId?.current} handleDelete={deleteCategory}/>
-
+    <ConfirmationDelete id={catogeryId?.current} handleDelete={deleteCategory} title={"Category"}/>
+    <CategoriesData getAllCategories={getCategory} show={show} handleClose={handleClose} mode={mode} value={currentCatogery.current}/>
   </div>
   )
 }

@@ -4,9 +4,9 @@ import passIcon from '../../../assets/icons/lock.svg'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { EMAIL_VALIDATION, OTP_VALIDATION, PASSWORD_VALIDATION } from '../../../service/validation'
-import { axiosInstancePrivate, USER_URL } from '../../../service/ulrs/urls'
 import { toastify } from './../../../service/toastifiy';
-
+import { axiosInstancePublic } from '../../../service/api/apiInstance';
+import { USER_URL } from '../../../service/api/apiConfig';
 const ResetPassword = () => {
   let { state } = useLocation()
   const [showPass, setShowPass] = useState(false);
@@ -34,7 +34,7 @@ const ResetPassword = () => {
 
   const onSubmit = async (data) => {
     try {
-      const res = await axiosInstancePrivate.post(USER_URL.RESET_PASSWORD, data)
+      const res = await axiosInstancePublic.post(USER_URL.RESET_PASSWORD, data)
       toastify('success', "Password Changed Successfully")
       navigate('/');
     } catch (error) {

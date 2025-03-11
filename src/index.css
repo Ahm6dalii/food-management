@@ -23,6 +23,35 @@
     --bs-btn-hover-color: #fff !important;
     --bs-btn-hover-bg: rgb(20, 102, 64,1) !important;
 }
+.bg-secondary-custom{
+    background-color: #f7f7f7 !important;
+}
+
+.textarea-resize{
+    resize:vertical ;
+    min-height: 98px !important;
+    max-height: 180px !important;
+}
+.file-image-input{
+    cursor: pointer;
+    border: 2px solid rgba(74, 163, 90, 1);
+    border-style: dashed;
+}
+.close-icon{
+    position: absolute;
+    top: -10px;
+    right: -8px;
+    cursor: pointer;
+    padding: 1px;
+    background-color: red;
+    border-radius: 50%;
+    color: white !important;
+    border: 1px solid white;
+}
+.cursor-pointer{
+    cursor: pointer;
+}
+
 /* ! header  */
 .header-container{
     background-image: url('../src/assets/images/headerBg.png');
@@ -33,14 +62,16 @@
     background-repeat: no-repeat;
     color: #fff;
 }
-.header-img{
+
+.header-image  {
+    width: 150px;
     top:5px
 }
-
 .sub-header-bg{
     background-color: rgba(240, 255, 239, 1);
 } 
 /*! Pro Sidebar */
+
 .sidebar-container{
     min-height: 100vh; 
 }
@@ -64,7 +95,7 @@
     background-color: rgba(31, 38, 62, 1);
     border-top-right-radius: 50px;
     color: #fff;
-    height: 100vh;
+    min-height: 100vh; 
 }
 
 .bill-notification{
@@ -98,5 +129,25 @@
     --bs-table-bg-type: var(--bs-table-striped-bg);
 }
 
+.table-responsive{
+    overflow: visible !important;
+}
 
  
+
+.modal .modal-header .btn-close {
+    --bs-btn-close-bg:"" !important;
+    padding: 2px;
+    border: 2px solid red !important;
+border-radius: 30px;
+color: red !important;
+display: flex;
+align-items: center;
+justify-content: center;
+font-weight: 600;
+
+}
+.modal .modal-header .btn-close::before{
+    content: "X";
+   
+}

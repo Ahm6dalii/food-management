@@ -4,16 +4,16 @@ import passIcon from '../../../assets/icons/lock.svg'
 import {  useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { EMAIL_VALIDATION, OTP_VALIDATION } from '../../../service/validation'
-import { axiosInstancePrivate, USER_URL } from '../../../service/ulrs/urls'
 import { toastify } from '../../../service/toastifiy'
-
+import { axiosInstancePublic } from '../../../service/api/apiInstance';
+import { USER_URL } from '../../../service/api/apiConfig';
 const VerifyAccount = () => {
     const { register, formState: { errors,isSubmitting }, handleSubmit } = useForm();
     const navigate = useNavigate();
 
     const onSubmit = async (data) => {
       try {        
-        const res = await axiosInstancePrivate.put(USER_URL.VERIFY_ACCOUNT, data)
+        const res = await axiosInstancePublic.put(USER_URL.VERIFY_ACCOUNT, data)
         toastify('success', "Account Verified Successfully")
         navigate('/');
       } catch (error) {

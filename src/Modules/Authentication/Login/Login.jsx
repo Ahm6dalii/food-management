@@ -3,10 +3,10 @@ import emailIcon from '../../../assets/icons/phone.svg'
 import passIcon from '../../../assets/icons/lock.svg'
 import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
-import {axiosInstancePublic,USER_URL} from './../../../service/ulrs/urls';
-import { EMAIL_VALIDATION, PASSWORD_VALIDATION } from '../../../service/validation'
+import { EMAIL_VALIDATION } from '../../../service/validation'
 import { toastify } from './../../../service/toastifiy';
-
+import { axiosInstancePublic } from '../../../service/api/apiInstance';
+import { USER_URL } from '../../../service/api/apiConfig';
 const Login = ({SaveLoginData}) => {
   const [showPass,setShowPass]=useState(false);
   const {register,formState:{errors,isSubmitting},handleSubmit}= useForm({mode:"onChange"});
