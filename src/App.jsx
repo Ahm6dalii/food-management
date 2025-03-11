@@ -18,6 +18,8 @@ import {  useEffect, useState } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import ProtectedRoute from './Modules/shared/ProtectedRoute/ProtectedRoute';
 import Users from './Modules/Users/Users';
+import ChangePassword from './Modules/Authentication/Change-password/ChangePassword';
+
 
 function App() {
   const[loginData,setLoginData]=useState(null)
@@ -48,14 +50,16 @@ const router=createBrowserRouter([
     {path:'users',element:<Users/>},
     {path:'categories',element:<CategoriesList/>},
     {path:'categories-data',element:<CategoriesData/>},
-    {path:'recipies',element:<RecipeList/>},
+    {path:'recipies',element:<RecipeList/> },
     {path:'recipies-data',element:<RecipeData/>},
+    {path:'change-password',element:<ChangePassword/>},
   ]}
 ])
+
   return (
     <>
        <Toastifiy/>
-      <RouterProvider router={router}>      </RouterProvider>
+      <RouterProvider  router={router} >   </RouterProvider>
     </>
   )
 }

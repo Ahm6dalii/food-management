@@ -18,7 +18,7 @@ const SubHeader = ({ title, discribtion, btnName, handleBtnAction, recipes }) =>
             <p className=' w-75 text-black'>{discribtion}</p>
           </div>
           <div className=' col-lg-5  flex align-content-center justify-content-center'>
-            <button onClick={handleBtnAction} className="btn btn-success d-block mx-auto flex gap-4 align-content-center px-5">{btnName} {recipes && <i className='fa fa-long-arrow-alt-right ms-3'></i>}</button>
+           <button onClick={handleBtnAction} className="btn btn-success d-block mx-auto flex gap-4 align-content-center px-5">{btnName} {recipes && <i className='fa fa-long-arrow-alt-right ms-3'></i>}</button>
 
           </div>
         </div> :
@@ -28,8 +28,9 @@ const SubHeader = ({ title, discribtion, btnName, handleBtnAction, recipes }) =>
               <p className='fs-6 '>{discribtion}</p>
             </div>
             <div className=' mt-3  '>
-              <button onClick={handleBtnAction} className="btn btn-success d-block mx-auto flex gap-4 align-content-center px-5">{btnName} {recipes && <i className='fa fa-long-arrow-alt-right ms-3'></i>}</button>
-            </div>
+        {handleBtnAction && <button onClick={handleBtnAction} className="btn btn-success d-block mx-auto flex gap-4 align-content-center px-5">{btnName} {recipes && <i className='fa fa-long-arrow-alt-right ms-3'></i>}</button>
+}
+         </div>
           </div>
           }
 
