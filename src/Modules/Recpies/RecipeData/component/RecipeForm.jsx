@@ -35,7 +35,7 @@ const RecipeForm = ({ mode }) => {
     // Fetch Categories
     const getCategories = async () => {
         try {
-            const res = await axiosInstancePrivate.get(CATEGORY_URL.GET_CATOGERY);
+            const res = await axiosInstancePrivate.get(CATEGORY_URL.GET_CATOGERY(1, 100));
             setCategories(res?.data?.data);
         } catch (error) {
             toastify("error", error?.response?.data?.message || "Failed to get categories");
@@ -127,10 +127,16 @@ const RecipeForm = ({ mode }) => {
                 <div className="mb-3">
                     <div className="input-group mb-3 bg-secondary-custom">
                         <input 
-                            {...register("price", { required: "Price is required" })} 
-                            type="number" 
+                            {...register("price", { required: "Price is required" 
+                                , pattern: { value: /^\d*\.?\d+$/, message: "Price must be a positive number" }
+
+                            })} 
+                            type="text" 
                             className="form-control bg-secondary-custom border-0" 
                             placeholder="Recipe Price" 
+                            onInput={(e) => {
+                                e.target.value = e.target.value.replace(/[^0-9.]/g, ""); 
+                            }}
                         />
                         <div className="input-group-append">
                             <span className="input-group-text border-0">EGP</span>

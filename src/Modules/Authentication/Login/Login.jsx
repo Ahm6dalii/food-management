@@ -25,7 +25,7 @@ const Login = ({SaveLoginData}) => {
        navigate('/dashboard');
     } catch (error) {
       console.log(error);   
-      toastify('error',error.response.data.message)
+      toastify('error',error.response.data.message||`Faild to Login`)
     }
   }
 

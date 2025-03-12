@@ -11,21 +11,21 @@ export const USER_URL={
    VERIFY_ACCOUNT:"Users/verify",
    CHANGE_PASSWORD:"Users/ChangePassword",
    GET_CURRENT_USER:"Users/currentUser",
-   GET_USERS:(pageSize,pageNumber,groups=1,userName='',email='',country='')=>`Users/?pageSize=${pageSize}&pageNumber=${pageNumber}&groups=${groups}&userName=${userName}&email=${email}&country=${country}`,
+   GET_USERS:(pageNumber=1,pageSize=10,groups=1,userName='',email='',country='')=>`Users/?pageSize=${pageSize}&pageNumber=${pageNumber}&groups=${groups}&userName=${userName}&email=${email}&country=${country}`,
    GET_USER_BY_ID:(id)=>`User/${id}`,
    UPDATE_USER_PROFILE:(id)=>`Users/`,
    DELETE_USER:(id)=>`Users/${id}`
 
 }
 export const RECEIPE_URL={
-   GET_RECIPE:"Recipe/?pageSize=10&pageNumber=1",
+   GET_RECIPE:(pageNumber=1,pageSize=10)=>`Recipe/?pageSize=${pageSize}&pageNumber=${pageNumber}`,
    GET_RECIPE_BY_ID:(id)=>`Recipe/${id}`,
    DELETE_RECIPE:(id)=>`Recipe/${id}`,
    UPDATE_RECIPE:(id)=>`Recipe/${id}`,
    ADD_RECIPE:"Recipe/",
 }
 export const CATEGORY_URL={
-   GET_CATOGERY:"Category/?pageSize=10&pageNumber=1",
+   GET_CATOGERY:(pageNumber=1,pageSize=10)=>`Category/?pageSize=${pageSize}&pageNumber=${pageNumber}`,
    GET_CATEGORY_BY_ID:(id)=>`Category/${id}`,
    DELETE_CATOGERY:(id)=>`Category/${id}`,
    UPDATE_CATOGERY:(id)=>`Category/${id}`,

@@ -9,6 +9,7 @@ import LoadingScreen from '../shared/LoadingScreen/LoadingScreen';
 import NoData from '../shared/NoData/NoData';
 import noDataImg from './../../assets/nodata.png';
 import { toastify } from '../../service/toastifiy';
+import Paginations from '../shared/Pagination/Pagination';
 
 const Users = () => {
     const [users, setUsers] = useState([]);
@@ -24,12 +25,14 @@ const Users = () => {
   const handleUserRoleChange=(e)=>{
     setUserRole(e.target.value)
   }
-    const getUsers = async () => {
+    const getUsers = async (pageNumber,pageSize) => {
+      console.log(pageNumber,pageSize);
+      
       setIsLoading(true)
       try {
-        const res = await axiosInstancePrivate.get(USER_URL.GET_USERS(10,1,userRole));
-        console.log(res?.data?.data);
-        setUsers(res?.data?.data);
+        const res = await axiosInstancePrivate.get(USER_URL.GET_USERS(pageNumber,pageSize,userRole));
+        console.log(res?.data);
+        setUsers(res?.data);
       } catch (error) {
         setUsers([]);
         console.log(error||"Faild to get data");
@@ -116,7 +119,7 @@ const Users = () => {
 
           <tbody>
        
-            {users?.length > 0 ? users?.map((user) => (
+            {users?.data?.length > 0 &&!isLoading ? users?.data?.map((user) => (
               <tr key={user?.id}>
                 <td data-label="user id">{user?.id}</td>
                 <td data-label="user name">{user?.userName} </td>
@@ -135,11 +138,12 @@ const Users = () => {
                 </td>
               </tr>
             )) : (<tr >
-              <td className='text-center ' colSpan={7}>{isLoading?<LoadingScreen/>:<NoData />}</td>
+              <td className='text-center ' colSpan={8}>{isLoading?<LoadingScreen/>:<NoData />}</td>
             </tr>)}
           </tbody>
-
         </table>
+
+              {users?.data?.length > 0 &&  <Paginations pageNumber={users?.pageNumber} pageSize={users?.pageSize} totalNumberOfPages={users?.totalNumberOfPages} totalNumberOfRecords={users?.totalNumberOfRecords} getNewPage={getUsers} />}
       </div>
 
       <ConfirmationDelete id={userId?.current} handleDelete={deleteUser} title={"User"} />

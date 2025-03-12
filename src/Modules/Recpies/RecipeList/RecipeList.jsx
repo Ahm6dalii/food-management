@@ -9,12 +9,12 @@ import LoadingScreen from '../../shared/LoadingScreen/LoadingScreen';
 import noDataImg from '../../../assets/nodata.png';
 import { imageURL, RECEIPE_URL } from '../../../service/api/apiConfig';
 import { axiosInstancePrivate } from '../../../service/api/apiInstance';
-import { useNavigate } from 'react-router-dom';
+import { data, useNavigate } from 'react-router-dom';
+import Paginations from '../../shared/Pagination/Pagination';
 
 export const RecipeList = () => {
   const [recipes, setRecipes] = useState([]);
   const[isLoading,setIsLoading]=useState(false)
-  const[currentRecipe,setcurrentRecipe]=useState({})
   const recipeId = useRef()
   const navigate = useNavigate();
 
@@ -27,13 +27,12 @@ export const RecipeList = () => {
     navigate('/dashboard/recipies-data',{state:'Update'} )    
     }
 
-  const getRecipes = async () => {
-    console.log(RECEIPE_URL.GET_RECIPE,'sdssas');
+  const getRecipes = async (pageNumber,pageSize) => {
     setIsLoading(true)
     try {
-      const res = await axiosInstancePrivate.get(RECEIPE_URL.GET_RECIPE);
-      console.log(res?.data?.data);
-      setRecipes(res?.data?.data);
+      const res = await axiosInstancePrivate.get(RECEIPE_URL.GET_RECIPE(pageNumber,pageSize));
+      console.log(res);
+      setRecipes(res?.data);
     } catch (error) {
       setRecipes([]);
       console.log(error||"Faild to get data");
@@ -46,12 +45,12 @@ export const RecipeList = () => {
   const deleteRecipes = async () => {
     try {
       const res = await axiosInstancePrivate.delete(RECEIPE_URL.DELETE_RECIPE(recipeId.current));
-      console.log(res?.data);
+      // console.log(res?.data);
       getRecipes();
       toastify('success', 'Reciepe Deleted successfuly')
     } catch (error) {
       toastify('error', 'falid to delete!')
-      console.log(error);
+      // console.log(error);
     }
 
   }
@@ -107,7 +106,6 @@ export const RecipeList = () => {
 
       <div className="container mt-4">
 
-        <div className="table-responsive-lg">
           <table className="table table-striped table-hover text-center align-middle overflow-x-auto">
 
             <thead className="table-secondary  overflow-visible">
@@ -124,7 +122,7 @@ export const RecipeList = () => {
 
             <tbody>
          
-              {recipes?.length > 0 ? recipes?.map((recipe) => (
+              {recipes?.data?.length > 0 &&!isLoading? recipes?.data?.map((recipe) => (
                 <tr key={recipe?.id}>
                   <td data-label="Item Name">{recipe?.name}</td>
                   <td data-label="Image"><img src={` ${recipe?.imagePath? imageURL+recipe?.imagePath:noDataImg}`} loading='lazy' alt="Food Image" className="img-fluid rounded w-100 d-block" style={{ maxWidth: 80 }} /></td>
@@ -147,8 +145,10 @@ export const RecipeList = () => {
             </tbody>
 
           </table>
-        </div>
-
+          {/* Pagination */}
+          {recipes?.data?.length > 0 &&  <Paginations pageNumber={recipes?.pageNumber} pageSize={recipes?.pageSize} totalNumberOfPages={recipes?.totalNumberOfPages} totalNumberOfRecords={recipes?.totalNumberOfRecords} getNewPage={getRecipes}   />}
+        
+        
         <ConfirmationDelete id={recipeId?.current} handleDelete={deleteRecipes} title={"Recipe"} />
 
       </div>
