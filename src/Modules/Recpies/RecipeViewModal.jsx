@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { imageURL } from '../../service/api/apiConfig';
+import nodata from './../../assets/nodata.png';
 
 const RecipeViewModal = ({ show, onHide, data,addToFavorites }) => {
     useEffect(() => {
@@ -17,7 +18,7 @@ const RecipeViewModal = ({ show, onHide, data,addToFavorites }) => {
                     <div>
                         <div className="text-center mb-3">
                             <img
-                                src={`${imageURL}/${data?.imagePath}`}
+                                src={`${ data?.imagePath ? imageURL + data?.imagePath : nodata}`}
                                 alt={data?.name}
                                 className="rounded-3 img-width"
                             />
