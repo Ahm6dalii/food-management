@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, {  useEffect, useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { toastify } from "../../../../service/toastifiy";
 import { CATEGORY_URL, imageURL, RECEIPE_URL, TAG_URL } from "../../../../service/api/apiConfig";
-import { axiosInstancePrivate, axiosInstancePrivateFormData } from "../../../../service/api/apiInstance";
+import { axiosInstancePrivate } from "../../../../service/api/apiInstance";
 
 const RecipeForm = ({ mode }) => {
+    const {id}=useParams()
     const [tags, setTags] = useState([]);
     const [categories, setCategories] = useState([]);
     const [fileName, setFileName] = useState(""); 
@@ -31,11 +32,16 @@ const RecipeForm = ({ mode }) => {
             toastify("error", error?.response?.data?.message || "Failed to get tags");
         }
     };
-
+   
     // Fetch Categories
     const getCategories = async () => {
         try {
-            const res = await axiosInstancePrivate.get(CATEGORY_URL.GET_CATOGERY);
+            const res = await axiosInstancePrivate.get(CATEGORY_URL.GET_CATOGERY,{
+                params:{
+                    pageNumber:1,
+                    pageSize:100
+                }
+            });
             setCategories(res?.data?.data);
         } catch (error) {
             toastify("error", error?.response?.data?.message || "Failed to get categories");
@@ -54,16 +60,19 @@ const RecipeForm = ({ mode }) => {
     // Form Submission
     const onSubmit = async (data) => {
         console.log(data);
+        const formData = new FormData();
+        for(let key in data){
+                formData.append(key, data[key]); 
+        }
        
         try {
-            if (mode === "Update") {
-                await axiosInstancePrivateFormData.put(RECEIPE_URL.UPDATE_RECIPE(data?.id), data);
+            if (mode=="Update") {
+                await axiosInstancePrivate.put(RECEIPE_URL.UPDATE_RECIPE(data?.id),formData);
                 toastify("success", "Recipe updated successfully!");
             } else {
-                await axiosInstancePrivateFormData.post(RECEIPE_URL.ADD_RECIPE, data);
+                await axiosInstancePrivate.post(RECEIPE_URL.ADD_RECIPE,formData);
                 toastify("success", "Recipe added successfully!");
             }
-
             reset();
             navigate("/dashboard/recipies");
         } catch (error) {
@@ -72,23 +81,35 @@ const RecipeForm = ({ mode }) => {
     };
 
     useEffect(() => {
-        getTags();
-        getCategories();
-    }, []);
-    
-    useEffect(() => {
-        if (mode === "Update") {
-            const storedRecipe = JSON.parse(localStorage.getItem("currentRecipe"));
-            if (storedRecipe) {
-                reset(storedRecipe);
-                setFileName(storedRecipe?.imagePath || "");
-                setTagValue(storedRecipe?.tag?.id || "");    
-                setCategoryValue(storedRecipe?.category?.[0]?.id || "");
-                setValue("tagId", tagValue|| "");
-                setValue("categoriesIds", categoryValue|| "");
+        (async () => {
+            await getTags();
+            await getCategories();
+            const getRecipeById = async (id) => {
+                try {
+                    const res = await axiosInstancePrivate.get(RECEIPE_URL.GET_RECIPE_BY_ID(id));
+                    console.log(res?.data);
+                    const recipeData=res?.data
+                    if (recipeData) {
+                                    reset(recipeData);
+                                    setFileName(recipeData?.imagePath || "");
+                                    setTagValue(recipeData?.tag?.id || "");    
+                                    setCategoryValue(recipeData?.category[0]?.id || "");
+                                }
+                    
+                } catch (error) {
+                    toastify("error", error?.response?.data?.message || "Failed to get tags");
+                }
+            };
+            if(id){
+                getRecipeById(id)
             }
-        }
-    }, [mode, reset]);
+        })();
+       
+    }, [id]);
+    
+  
+
+
 
     return (
         <div className="mt-4">
@@ -127,10 +148,16 @@ const RecipeForm = ({ mode }) => {
                 <div className="mb-3">
                     <div className="input-group mb-3 bg-secondary-custom">
                         <input 
-                            {...register("price", { required: "Price is required" })} 
-                            type="number" 
+                            {...register("price", { required: "Price is required" 
+                                , pattern: { value: /^\d*\.?\d+$/, message: "Price must be a positive number" }
+
+                            })} 
+                            type="text" 
                             className="form-control bg-secondary-custom border-0" 
                             placeholder="Recipe Price" 
+                            onInput={(e) => {
+                                e.target.value = e.target.value.replace(/[^0-9.]/g, ""); 
+                            }}
                         />
                         <div className="input-group-append">
                             <span className="input-group-text border-0">EGP</span>
@@ -190,7 +217,7 @@ const RecipeForm = ({ mode }) => {
                     </div>
                     
                 </label>
-                {mode=="Update" && <div className="d-flex justify-content-center align-items-center"><img width={200} src={imageURL+fileName} alt="Selected" /></div>}
+                {mode==="Update" &&fileName&& <div className="d-flex justify-content-center align-items-center"><img width={200} src={imageURL+fileName} alt="Selected" /></div>}
                 {errors.recipeImage && <div className="text-danger">{errors.recipeImage.message}</div>}
 
                 {/* Action Buttons */}

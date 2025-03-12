@@ -23,7 +23,7 @@ const FogetPassword = () => {
        navigate('/reset-password',{state:{email:data?.email}});
     } catch (error) {
       console.log(error);   
-      toastify('error',error.response.data.message)
+      toastify('error',error.response.data.message||`Faild to send OTP`)
     }
   }
 
