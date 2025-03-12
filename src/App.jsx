@@ -22,7 +22,11 @@ import ChangePassword from './Modules/Authentication/Change-password/ChangePassw
 
 
 function App() {
-  const[loginData,setLoginData]=useState(null)
+  const[loginData,setLoginData]=useState(()=>{
+    if(localStorage.getItem('token')!=null){
+      return jwtDecode(localStorage.getItem('token'))
+    }
+  })
 
     const SaveLoginData=()=>{
       const data=localStorage.getItem('token')
@@ -51,7 +55,8 @@ const router=createBrowserRouter([
     {path:'categories',element:<CategoriesList/>},
     {path:'categories-data',element:<CategoriesData/>},
     {path:'recipies',element:<RecipeList/> },
-    {path:'recipies-data',element:<RecipeData/>},
+    {path:'recipies-data/new-recipe',element:<RecipeData/>},
+    {path:'recipies-data/:id',element:<RecipeData/>},
     {path:'change-password',element:<ChangePassword/>},
   ]}
 ])

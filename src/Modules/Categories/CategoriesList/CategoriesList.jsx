@@ -10,14 +10,17 @@ import CategoriesData from '../CategoriesData/CategoriesData';
 import { axiosInstancePrivate } from '../../../service/api/apiInstance';
 import { CATEGORY_URL } from '../../../service/api/apiConfig';
 import Paginations from '../../shared/Pagination/Pagination';
+import CategoryViewModal from '../CategoryViewModal';
 const CategoriesList = () => {
   const [category, setCategory] = useState([]);
   const [isLoading, setIsLoading] = useState(false)
+  const [seachValue,setSearchvalue]=useState('')
   const [show, setShow] = useState(false);
   const [mode, setMode] = useState('');
-
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+    const [viewModalShow, setViewModalShow] = useState(false);
+    const [currentCategory, setCurrentCategory] = useState({});
 
   const catogeryId = useRef()
   const currentCatogery = useRef()
@@ -31,12 +34,25 @@ const CategoriesList = () => {
     handleShow(true)
   }
 
-  const getCategory = async (pageNumber, pageSize) => {
+  const handleSearch = (e) => {
+    setSearchvalue(e.target.value)
+  }
+  const handleViewCategory = (category) => {
+    setCurrentCategory(category)
+    setViewModalShow(true)
+  }
+  const getCategory = async (pageNumber = 1, pageSize=10,searchValue) => {
     setIsLoading(prev=>true)
     console.log(isLoading);
     
     try {
-      const res = await axiosInstancePrivate.get(CATEGORY_URL.GET_CATOGERY(pageNumber, pageSize));
+      const res = await axiosInstancePrivate.get(CATEGORY_URL.GET_CATOGERY,{
+        params: {
+          pageNumber: pageNumber,
+          pageSize: pageSize,
+          name:searchValue
+        }
+      });
       console.log(res?.data);
       console.log(isLoading,'after');
       setCategory(res?.data);
@@ -59,9 +75,12 @@ const CategoriesList = () => {
     }
   }
 
-  useEffect(() => {
-    getCategory();
-  }, [])
+ 
+  
+    useEffect(() => {
+      getCategory(1,10,seachValue);
+    }, [seachValue])
+  
 
   return (
     <div className='overflow-hidden'>
@@ -77,28 +96,14 @@ const CategoriesList = () => {
                 <span className="input-group-text border-0  bg-transparent" id="search-addon">
                   <i className="fas fa-search"></i>
                 </span>
-                <input type="search" className="form-control border-0 rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+                <input type="search" onChange={(e)=>{handleSearch(e)}} className="form-control border-0 rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
               </div>
             </div>
 
-            <div className="select-tag w-25">
-              <select className="form-select" aria-label="Default select example">
-                <option selected value='tags'>Tags</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
-              </select>
-            </div>
+           
           </div>
 
-          <div className="col-md-2 select-category ">
-            <select className="form-select" aria-label="Default select example">
-              <option selected value='d'>Category</option>
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
-            </select>
-          </div>
+       
         </div>
       </div>
 
@@ -125,9 +130,9 @@ const CategoriesList = () => {
                   <td data-label="Action" className='dropup-center dropup '>
                     <i className="fa fa-ellipsis text-secondary dropup-center dropup cursor-pointer " data-bs-toggle="dropdown" />
                     <ul className="dropdown-menu  z-3 position-absolute">
-                      <li><a className="dropdown-item d-flex align-content-center gap-2 cursor-pointer" href="#"><i className='fa-solid fa-eye text-success'></i> View</a></li>
+                      <li onClick={() => handleViewCategory(category)}><a className="dropdown-item d-flex align-content-center gap-2 cursor-pointer" ><i className='fa-solid fa-eye text-success'></i> View</a></li>
                       <li onClick={() => handleUpdateCategory(category)}><a className="dropdown-item cursor-pointer d-flex align-content-center gap-2"><i className="fa-solid fa-pen-to-square text-success"></i> Edit</a></li>
-                      <li onClick={() => catogeryId.current = category?.id}><a className="dropdown-item  cursor-pointerd-flex align-content-center gap-2" data-bs-toggle="modal" data-bs-target="#exampleModal" href="#"><i className="fa-solid fa-trash-can text-success"></i>delete</a></li>
+                      <li onClick={() => catogeryId.current = category?.id}><a className="dropdown-item  cursor-pointerd-flex align-content-center gap-2" data-bs-toggle="modal" data-bs-target="#exampleModal" ><i className="fa-solid fa-trash-can text-success"></i>delete</a></li>
                     </ul>
                   </td>
                 </tr>
@@ -145,6 +150,7 @@ const CategoriesList = () => {
 
       <ConfirmationDelete id={catogeryId?.current} handleDelete={deleteCategory} title={"Category"} />
       <CategoriesData getAllCategories={getCategory} show={show} handleClose={handleClose} mode={mode} value={currentCatogery.current} />
+      <CategoryViewModal show={viewModalShow} onHide={() => setViewModalShow(false)} data={currentCategory} />
     </div>
   )
 }
