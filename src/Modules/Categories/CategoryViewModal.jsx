@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
 const CategoryViewModal = ({ show, onHide, data }) => {
