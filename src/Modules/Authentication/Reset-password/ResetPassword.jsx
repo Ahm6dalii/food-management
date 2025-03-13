@@ -11,7 +11,7 @@ const ResetPassword = () => {
   let { state } = useLocation()
   const [showPass, setShowPass] = useState(false);
   const [showConfirmPass, setConfirmPass] = useState(false);
-  const { register, formState: { errors, isSubmitting }, watch, setValue, trigger, handleSubmit } = useForm({ defaultValues: { email: state?.email?.toLowerCase() }, mode: "onChange" });
+  const { register, formState: { errors, isSubmitting }, watch,  trigger, handleSubmit } = useForm({ defaultValues: { email: state?.email?.toLowerCase() }, mode: "onChange" });
   const navigate = useNavigate();
 
   const password = watch("password")
@@ -20,9 +20,12 @@ const ResetPassword = () => {
   useEffect(() => {
     if (confirmPassword) {
       trigger("confirmPassword")
-      console.log(trigger("confirmPassword"));
     }
   }, [password, confirmPassword, trigger])
+
+  useEffect(() => {
+    document.title = "Reset Password"
+  }, [])
 
   const handleShowPass = () => {
     setShowPass(prev => !prev)

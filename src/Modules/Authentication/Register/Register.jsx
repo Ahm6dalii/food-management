@@ -40,6 +40,10 @@ const Register = () => {
     }
   }
 
+  useEffect(() => {
+    document.title = "Register"
+  }, [])
+
   return (
     <>
       <div className='lh-1'>

@@ -1,6 +1,6 @@
 import React from 'react'
 import logo from './../../../assets/nodata.png';
-const ConfirmationDelete = ({ id, handleDelete,title}) => {
+const ConfirmationDelete = ({ id, handleDelete,title ,isloading}) => {
   const deleteItem = () => {
     console.log(id);
     handleDelete(id)
@@ -23,7 +23,7 @@ const ConfirmationDelete = ({ id, handleDelete,title}) => {
                 <p className='text-muted w-75 px-3 text-center'>are you sure you want to delete this item ? if you are sure just click on delete it</p>
               </div>
               <div className="d-flex justify-content-end p-3">
-                <button type="button" data-bs-dismiss="modal" onClick={deleteItem} className="btn btn-outline-danger">Delete this {title}</button>
+                <button type="button" disabled={isloading} data-bs-dismiss="modal" onClick={deleteItem} className="btn btn-outline-danger">{isloading ? <i className="fa fa-spinner fa-spin"></i>: `Delete this ${title}`}</button>
               </div>
             </div>
           </div>

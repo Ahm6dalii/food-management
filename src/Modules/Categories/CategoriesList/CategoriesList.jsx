@@ -14,13 +14,14 @@ import CategoryViewModal from '../CategoryViewModal';
 const CategoriesList = () => {
   const [category, setCategory] = useState([]);
   const [isLoading, setIsLoading] = useState(false)
-  const [seachValue,setSearchvalue]=useState('')
+  const [isDeleteLoading, setIsDeleteLoading] = useState(false)
+  const [seachValue, setSearchvalue] = useState('')
   const [show, setShow] = useState(false);
   const [mode, setMode] = useState('');
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-    const [viewModalShow, setViewModalShow] = useState(false);
-    const [currentCategory, setCurrentCategory] = useState({});
+  const [viewModalShow, setViewModalShow] = useState(false);
+  const [currentCategory, setCurrentCategory] = useState({});
 
   const catogeryId = useRef()
   const currentCatogery = useRef()
@@ -41,30 +42,29 @@ const CategoriesList = () => {
     setCurrentCategory(category)
     setViewModalShow(true)
   }
-  const getCategory = async (pageNumber = 1, pageSize=10,searchValue) => {
-    setIsLoading(prev=>true)
+  const getCategory = async (pageNumber = 1, pageSize = 10, searchValue) => {
+    setIsLoading(prev => true)
     console.log(isLoading);
-    
+
     try {
-      const res = await axiosInstancePrivate.get(CATEGORY_URL.GET_CATOGERY,{
+      const res = await axiosInstancePrivate.get(CATEGORY_URL.GET_CATOGERY, {
         params: {
           pageNumber: pageNumber,
           pageSize: pageSize,
-          name:searchValue
+          name: searchValue
         }
       });
       console.log(res?.data);
-      console.log(isLoading,'after');
+      console.log(isLoading, 'after');
       setCategory(res?.data);
     } catch (error) {
       console.log(error);
     } finally { setIsLoading(false) }
   }
-  useEffect(() => {
-    console.log("Updated isLoading:", isLoading);
-  }, [isLoading]);
+
 
   const deleteCategory = async () => {
+    setIsDeleteLoading(true)
     try {
       const res = await axiosInstancePrivate.delete(CATEGORY_URL.DELETE_CATOGERY(catogeryId.current));
       getCategory();
@@ -72,15 +72,18 @@ const CategoriesList = () => {
     } catch (error) {
       toastify('error', 'falid to delete!')
       console.log(error);
-    }
+    }finally{ setIsDeleteLoading(false) }
   }
 
- 
-  
-    useEffect(() => {
-      getCategory(1,10,seachValue);
-    }, [seachValue])
-  
+  useEffect(() => {
+    // Change the title of the document
+    document.title = 'Categories List'
+  }, [document.title]);
+
+  useEffect(() => {
+    getCategory(1, 10, seachValue);
+  }, [seachValue])
+
 
   return (
     <div className='overflow-hidden'>
@@ -96,19 +99,19 @@ const CategoriesList = () => {
                 <span className="input-group-text border-0  bg-transparent" id="search-addon">
                   <i className="fas fa-search"></i>
                 </span>
-                <input type="search" onChange={(e)=>{handleSearch(e)}} className="form-control border-0 rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+                <input type="search" onChange={(e) => { handleSearch(e) }} className="form-control border-0 rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
               </div>
             </div>
 
-           
+
           </div>
 
-       
+
         </div>
       </div>
 
-      <div className="container mt-4">
-        <div className="table-responsive-lg">
+      <div className="container-fluid mt-4">
+        <div className="overflow-x-auto">
           <table className="table table-striped  table-hover text-center align-middle overflow-x-auto">
 
             <thead className="table-secondary overflow-visible">
@@ -137,20 +140,20 @@ const CategoriesList = () => {
                   </td>
                 </tr>
               )) : (<tr >
-                <td className='text-center' colSpan={7}>{isLoading? <LoadingScreen /> : <NoData />} </td>
+                <td className='text-center' colSpan={7}>{isLoading ? <LoadingScreen /> : <NoData />} </td>
               </tr>)}
             </tbody>
 
           </table>
-          {category?.data?.length > 0 &&  <Paginations pageNumber={category?.pageNumber} pageSize={category?.pageSize} totalNumberOfPages={category?.totalNumberOfPages} totalNumberOfRecords={category?.totalNumberOfRecords
-          } getNewPage={getCategory} /> }
-         
         </div>
+          {category?.data?.length > 0 && <Paginations pageNumber={category?.pageNumber} pageSize={category?.pageSize} totalNumberOfPages={category?.totalNumberOfPages} totalNumberOfRecords={category?.totalNumberOfRecords
+          } getNewPage={getCategory} />}
+       
       </div>
 
-      <ConfirmationDelete id={catogeryId?.current} handleDelete={deleteCategory} title={"Category"} />
+      <ConfirmationDelete id={catogeryId?.current} handleDelete={deleteCategory} title={"Category"} isloading={isDeleteLoading}/>
       <CategoriesData getAllCategories={getCategory} show={show} handleClose={handleClose} mode={mode} value={currentCatogery.current} />
-      <CategoryViewModal show={viewModalShow} onHide={() => setViewModalShow(false)} data={currentCategory} />
+      <CategoryViewModal show={viewModalShow} onHide={() => setViewModalShow(false)} data={currentCategory}  />
     </div>
   )
 }

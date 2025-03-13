@@ -2,9 +2,6 @@ import React, { useEffect } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
 const CategoryViewModal = ({ show, onHide, data }) => {
-    useEffect(() => {
-        console.log(data, 'Category Data');
-    }, [data]);
 
     return (
         <Modal show={show} onHide={onHide} size="lg" centered>

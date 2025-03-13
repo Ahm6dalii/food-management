@@ -15,7 +15,7 @@ const NotFound = () => {
           <div className='logo'>
           <img src={logo} className='w-75' alt="logo" />
           </div>
-            <div className=' h-100 d-flex justify-items-end  '>
+            <div className='  d-flex justify-items-end  '>
             <div className='w-75 position-absolute top-50 start-50 translate-middle'>
               <h2 className='h1'>Oops</h2>
               <h4 className='text-success'>Page not found</h4>

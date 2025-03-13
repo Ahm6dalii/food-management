@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{ useEffect }  from 'react'
 import emailIcon from '../../../assets/icons/phone.svg'
 import {  useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
@@ -27,6 +27,9 @@ const FogetPassword = () => {
     }
   }
 
+  useEffect(() => {
+    document.title = "Forget Password"
+  }, [])
   return (
          <>
           <div className='lh-1 '>

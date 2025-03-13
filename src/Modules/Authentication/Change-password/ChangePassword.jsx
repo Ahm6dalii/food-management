@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, {  useEffect, useState } from 'react'
 import passIcon from '../../../assets/icons/lock.svg'
-import { useForm } from 'react-hook-form'
+import {  useForm } from 'react-hook-form'
 import { PASSWORD_VALIDATION } from '../../../service/validation'
 import { toastify } from './../../../service/toastifiy';
 import logo from '../../../assets/logo/logo1.png'
@@ -12,6 +12,7 @@ const ChangePassword = ({ show,handleClose}) => {
   const [showOldPassword, setShowOldPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [title, setTitle] = useState('')
 
   const { register, formState: { errors, isSubmitting }, handleSubmit, watch, reset } = useForm({ mode: "onChange" });
 
@@ -38,6 +39,19 @@ const ChangePassword = ({ show,handleClose}) => {
       toastify('error', error?.response?.data?.message || "Faild to Send")
     }
   }
+  
+   
+      useEffect(() => {
+        // Change the title of the document
+        if(show){
+          setTitle(document.title) 
+          document.title = "Change Password";
+        }else{     
+          document.title =title;
+        }
+       
+      }, [show]);
+
   return (
     <div>
       <Modal show={show}  onHide={handleClose}>

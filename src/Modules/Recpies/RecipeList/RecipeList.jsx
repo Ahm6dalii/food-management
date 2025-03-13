@@ -12,6 +12,7 @@ import { axiosInstancePrivate } from '../../../service/api/apiInstance';
 import { useNavigate } from 'react-router-dom';
 import Paginations from '../../shared/Pagination/Pagination';
 import RecipeViewModal from '../RecipeViewModal';
+import { set } from 'react-hook-form';
 
 export const RecipeList = () => {
   const [recipes, setRecipes] = useState([]);
@@ -23,6 +24,7 @@ export const RecipeList = () => {
   const [viewModalShow, setViewModalShow] = useState(false);
   const [currentRecipe, setCurrentRecipe] = useState({});
   const [isLoading, setIsLoading] = useState(false)
+  const [isDeleteLoading, setIsDeleteLoading] = useState(false)
   const recipeId = useRef()
   const navigate = useNavigate();
 
@@ -59,6 +61,7 @@ export const RecipeList = () => {
 
 
   const deleteRecipes = async () => {
+    setIsDeleteLoading(true)
     try {
       const res = await axiosInstancePrivate.delete(RECEIPE_URL.DELETE_RECIPE(recipeId.current));
       // console.log(res?.data);
@@ -67,6 +70,8 @@ export const RecipeList = () => {
     } catch (error) {
       toastify('error', 'falid to delete!')
       // console.log(error);
+    }finally{
+      setIsDeleteLoading(false)
     }
 
   }
@@ -90,7 +95,6 @@ export const RecipeList = () => {
   }
 
   useEffect(() => {
-
     // Fetch Tags
     const getTags = async () => {
       try {
@@ -123,7 +127,10 @@ export const RecipeList = () => {
     getRecipes(1,8,tagId, categoriesIds, seachValue)
   }, [categoriesIds, tagId, seachValue])
 
-
+   useEffect(() => {
+        // Change the title of the document
+        document.title = 'Recipes List';
+      }, [document.title]);
 
 
   return (
@@ -172,7 +179,7 @@ export const RecipeList = () => {
         </div>
       </div>
 
-      <div className="container mt-4">
+      <div className="overflow-x-auto">
 
         <table className="table table-striped table-hover text-center align-middle overflow-x-auto">
 
@@ -214,13 +221,13 @@ export const RecipeList = () => {
 
         </table>
         {/* Pagination */}
+      </div>
         {recipes?.data?.length > 0 && <Paginations pageNumber={recipes?.pageNumber} pageSize={recipes?.pageSize} totalNumberOfPages={recipes?.totalNumberOfPages} totalNumberOfRecords={recipes?.totalNumberOfRecords} getNewPage={getRecipes} />}
 
 
-        <ConfirmationDelete id={recipeId?.current} handleDelete={deleteRecipes} title={"Recipe"} />
+        <ConfirmationDelete id={recipeId?.current} handleDelete={deleteRecipes} title={"Recipe"}  isloading={isDeleteLoading}/>
         <RecipeViewModal show={viewModalShow} onHide={() => setViewModalShow(false)} data={currentRecipe} />
 
-      </div>
 
     </div>
   )

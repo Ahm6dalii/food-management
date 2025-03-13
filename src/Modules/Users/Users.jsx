@@ -87,6 +87,11 @@ const Users = () => {
     }
   
     useEffect(() => {
+      // Change the title of the document
+      document.title = 'Users List';
+    }, [document.title]);
+
+    useEffect(() => {
      getUsers(1,10,userRole,seachValue,emailValue,countryValue)
     }, [seachValue,countryValue,emailValue,userRole])
   
@@ -149,10 +154,9 @@ const Users = () => {
       </div>
     </div>
 
-    <div className="container mt-4">
-
-      <div className="table-responsive-lg" >
-        <table className="table table-striped table-hover text-center align-middle overflow-x-auto" >
+    <div className="container-fluid mt-4">
+<div className="overflow-x-auto">
+        <table className="table table-striped table-hover text-center align-middle " >
 
           <thead className="table-secondary  overflow-visible">
             <tr>
@@ -193,9 +197,10 @@ const Users = () => {
             </tr>)}
           </tbody>
         </table>
+</div>
 
               {users?.data?.length > 0 &&  <Paginations pageNumber={users?.pageNumber} pageSize={users?.pageSize} totalNumberOfPages={users?.totalNumberOfPages} totalNumberOfRecords={users?.totalNumberOfRecords} getNewPage={getUsers} />}
-      </div>
+      
 
       <ConfirmationDelete id={userId?.current} handleDelete={deleteUser} title={"User"} />
       <UserViewModal   show={viewModalShow} onHide={() => setViewModalShow(false)} data={currentUser}/>
