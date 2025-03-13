@@ -4,6 +4,8 @@ import { imageURL } from '../../service/api/apiConfig';
 import notfound from '../../assets/nodata.png';
 const RecipeViewModal = ({ show, onHide, data }) => {
 
+
+
     return (
         <Modal show={show} onHide={onHide} size="lg" centered>
             <Modal.Header className='border-0' closeButton>
@@ -15,6 +17,7 @@ const RecipeViewModal = ({ show, onHide, data }) => {
                         <div className="text-center mb-3">
                             <img
                                 src={`${data?.imagePath?imageURL+data?.imagePath:notfound}`}
+
                                 alt={data?.name}
                                 className="rounded-3 img-width"
                             />

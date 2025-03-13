@@ -3,6 +3,7 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { imageURL } from '../../service/api/apiConfig';
 import notfound from '../../assets/nodata.png';
+
 const UserViewModal = ({ show, onHide, data }) => {
 
 
