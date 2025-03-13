@@ -1,11 +1,8 @@
 import React, { useEffect } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { imageURL } from '../../service/api/apiConfig';
-
-const RecipeViewModal = ({ show, onHide, data,addToFavorites }) => {
-    useEffect(() => {
-        console.log(data, 'Recipe Data');
-    }, [data]);
+import notfound from '../../assets/nodata.png';
+const RecipeViewModal = ({ show, onHide, data }) => {
 
     return (
         <Modal show={show} onHide={onHide} size="lg" centered>
@@ -17,7 +14,7 @@ const RecipeViewModal = ({ show, onHide, data,addToFavorites }) => {
                     <div>
                         <div className="text-center mb-3">
                             <img
-                                src={`${imageURL}/${data?.imagePath}`}
+                                src={`${data?.imagePath?imageURL+data?.imagePath:notfound}`}
                                 alt={data?.name}
                                 className="rounded-3 img-width"
                             />
@@ -33,7 +30,7 @@ const RecipeViewModal = ({ show, onHide, data,addToFavorites }) => {
                 )}
             </Modal.Body>
             <Modal.Footer className='border-0'>
-                <Button variant="secondary" onClick={addToFavorites}>Favorite</Button>
+                <Button variant="secondary" onClick={onHide}>Close</Button>
             </Modal.Footer>
         </Modal>
     );

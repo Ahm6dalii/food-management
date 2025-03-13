@@ -31,8 +31,7 @@ function App() {
     const SaveLoginData=()=>{
       const data=localStorage.getItem('token')
       const loginDataDecode= jwtDecode(data);
-      console.log(loginDataDecode);
-      
+      console.log(loginDataDecode); 
       setLoginData(loginDataDecode)
     }
 

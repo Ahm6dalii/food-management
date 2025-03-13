@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import emailIcon from '../../../assets/icons/phone.svg'
 import passIcon from '../../../assets/icons/lock.svg'
 import {  useNavigate } from 'react-router-dom'
@@ -21,6 +21,10 @@ const VerifyAccount = () => {
         toastify('error', error?.response?.data?.message || `Faild to Verify Account`)
       } 
     }
+
+    useEffect(() => {
+      document.title = "Verify Account"
+    }, [])
 
   return (
          < >

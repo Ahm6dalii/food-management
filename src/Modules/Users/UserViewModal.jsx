@@ -2,11 +2,9 @@ import { useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { imageURL } from '../../service/api/apiConfig';
-
+import notfound from '../../assets/nodata.png';
 const UserViewModal = ({ show, onHide, data }) => {
-  useEffect(() => {
-    console.log(data, 'User Data');
-  }, [data]);
+
 
   return (
     <Modal show={show} onHide={onHide} size="lg" centered>
@@ -18,7 +16,7 @@ const UserViewModal = ({ show, onHide, data }) => {
           <div>
             <div className="text-center mb-3">
               <img
-                src={`${imageURL}/${data?.imagePath}`}
+                src={`${data?.imagePath?imageURL+data?.imagePath:notfound}`}
                 alt="User"
                 className="rounded-3 img-width"
                
@@ -36,7 +34,7 @@ const UserViewModal = ({ show, onHide, data }) => {
         )}
       </Modal.Body>
       <Modal.Footer className='border-0'>
-        <Button variant="secondary" >close</Button>
+        <Button variant="secondary" onClick={onHide} >close</Button>
       </Modal.Footer>
     </Modal>
   );

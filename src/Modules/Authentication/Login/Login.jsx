@@ -1,4 +1,4 @@
-import React, {  useState } from 'react'
+import React, {  useEffect, useState } from 'react'
 import emailIcon from '../../../assets/icons/phone.svg'
 import passIcon from '../../../assets/icons/lock.svg'
 import { Link, useNavigate } from 'react-router-dom'
@@ -28,6 +28,10 @@ const Login = ({SaveLoginData}) => {
       toastify('error',error.response.data.message||`Faild to Login`)
     }
   }
+
+  useEffect(() => {
+    document.title="Login"
+  }, [])
 
   return (
            <>

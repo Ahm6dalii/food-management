@@ -1,14 +1,24 @@
-import React from 'react'
+import React, {  useEffect } from 'react'
 import logo from './../../assets/welcomeImg.png'
 import Header from './../shared/Header/Header';
 import SubHeader from '../shared/SubHeader/SubHeader';
+import { useNavigate } from 'react-router-dom';
 
 
 const Dashboard = () => {
+  const navigate=useNavigate()
   const handleBtnAction=()=>{
-      console.log('clicked');  
+
+      navigate('/dashboard/recipies')
   }
-  
+
+
+  useEffect(() => {
+    // Update the document title 
+    document.title = "Dashboard";
+    
+
+  }, [document.title]);
   return (
     <div>
      <Header title="Welcome Upskilling !" discribtion="This is a welcoming screen for the entry of the application , you can now see the options" logo={logo} />
