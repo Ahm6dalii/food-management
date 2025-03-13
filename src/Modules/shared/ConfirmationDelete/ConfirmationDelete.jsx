@@ -19,7 +19,7 @@ const ConfirmationDelete = ({ id, handleDelete,title ,isloading}) => {
                 <div className=''>
                   <img src={logo} className='w-75 mx-auto d-block' alt="" />
                 </div>
-                <h5 className='w-100 pt-3 text-center'>No Data !</h5>
+                <h5 className='w-100 pt-3 text-center'>Delete this {title} ?</h5>
                 <p className='text-muted w-75 px-3 text-center'>are you sure you want to delete this item ? if you are sure just click on delete it</p>
               </div>
               <div className="d-flex justify-content-end p-3">

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { imageURL } from '../../service/api/apiConfig';
 import notfound from '../../assets/nodata.png';
