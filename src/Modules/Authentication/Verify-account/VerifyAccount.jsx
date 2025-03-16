@@ -1,14 +1,15 @@
 import React, { useEffect } from 'react'
 import emailIcon from '../../../assets/icons/phone.svg'
 import passIcon from '../../../assets/icons/lock.svg'
-import {  useNavigate } from 'react-router-dom'
+import {  useLocation, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { EMAIL_VALIDATION, OTP_VALIDATION } from '../../../service/validation'
 import { toastify } from '../../../service/toastifiy'
 import { axiosInstancePublic } from '../../../service/api/apiInstance';
 import { USER_URL } from '../../../service/api/apiConfig';
 const VerifyAccount = () => {
-    const { register, formState: { errors,isSubmitting }, handleSubmit } = useForm();
+    const {state}=useLocation()
+    const { register, formState: { errors,isSubmitting }, handleSubmit } = useForm({ defaultValues: { email: state?.email?.toLowerCase() }, mode: "onChange" });
     const navigate = useNavigate();
 
     const onSubmit = async (data) => {
@@ -38,7 +39,7 @@ const VerifyAccount = () => {
                    <div className={`input-group ${errors?.email ? ' mb-1' : 'mb-3'}`}>
                      <span className="input-group-text"><img src={emailIcon} alt="email icon" className="w-full" /></span>
                      <div className="form-floating">
-                       <input {...register('email', EMAIL_VALIDATION)} autoComplete="true" type="email" className="form-control" id="email" placeholder="Email" />
+                       <input disabled {...register('email', EMAIL_VALIDATION)} autoComplete="true" type="email" className="form-control" id="email" placeholder="Email" />
                        <label htmlFor="email ">Enter your E-mail</label>
                      </div>
                    </div>

@@ -48,6 +48,7 @@ const ChangePassword = ({ show,handleClose}) => {
           document.title = "Change Password";
         }else{     
           document.title =title;
+          reset()
         }
        
       }, [show]);
