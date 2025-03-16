@@ -32,8 +32,8 @@ const Register = () => {
   const onSubmit = async (data) => {
     try {
       const res = await axiosInstancePublic.post(USER_URL.REGISTER, data)
-      toastify('success', "Register Successfully")
-      navigate('/verify-account');
+      toastify('success',res?.data?.message ,"Register Successfully Verification Code Sent to Your Email")
+      navigate('/verify-account', { state: { email: data.email } });
     } catch (error) {
       console.log(error);
       toastify('error', error?.response?.data?.message || `Faild to Register`)

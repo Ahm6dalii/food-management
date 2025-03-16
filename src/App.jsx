@@ -1,4 +1,4 @@
-import { createBrowserRouter,RouterProvider, ScrollRestoration } from 'react-router-dom'
+import { createBrowserRouter,RouterProvider } from 'react-router-dom'
 import './App.css'
 import AuthLayout from './Modules/shared/AuthLayout/AuthLayout'
 import Login from './Modules/Authentication/Login/Login';
