@@ -12,7 +12,9 @@ const RecipeForm = ({ mode }) => {
     const [fileName, setFileName] = useState(""); 
     const [tagValue, setTagValue] = useState('');
     const [categoryValue, setCategoryValue] = useState('');
-    const [imgInputTouched, setImgInputTouched] = useState('');
+    const [imagePreview, setImagePreview] = useState("");
+    const [imageObject, setImageObject] = useState("");
+
 
     const { 
         register, 
@@ -58,6 +60,24 @@ const RecipeForm = ({ mode }) => {
         if (file) {
             setFileName(file.name);
             setValue("recipeImage", file); 
+            setImagePreview(URL.createObjectURL(file)); 
+            console.log(URL.createObjectURL(file),"URL.createObjectURL(file)");
+            
+        }
+    };
+    const createFileFromPath = async (imagePath) => {
+        try {
+            const response = await fetch(imageURL + imagePath)
+            const blob = await response.blob(); 
+            const fileName = imagePath.split("/").pop(); 
+            
+            // Create a File object
+            const file = new File([blob], fileName, { type: blob.type });
+            
+            return file;
+        } catch (error) {
+            console.error("Error converting path to file:", error);
+            return null;
         }
     };
 
@@ -96,6 +116,9 @@ const RecipeForm = ({ mode }) => {
                     if (recipeData) {
                                     reset(recipeData);
                                     setFileName(recipeData?.imagePath || "");
+                                    const file = await createFileFromPath(recipeData?.imagePath || "");
+                                    setImageObject(file);
+                                    setValue("recipeImage", file); 
                                     setTagValue(recipeData?.tag?.id || "");    
                                     setCategoryValue(recipeData?.category[0]?.id || "");
                                 }
@@ -221,7 +244,8 @@ const RecipeForm = ({ mode }) => {
                     </div>
                     
                 </label>
-                {mode==="Update" &&!imgInputTouched&&fileName&& <div className="d-flex justify-content-center align-items-center"><img width={200} src={imageURL+fileName} alt="Selected" /></div>}
+
+                {fileName&& <div className="d-flex justify-content-center align-items-center"><img width={200} src={imagePreview?imagePreview:imageURL+fileName} alt="Selected" /></div>}
                 {errors.recipeImage && <div className="text-danger">{errors.recipeImage.message}</div>}
 
                 {/* Action Buttons */}
