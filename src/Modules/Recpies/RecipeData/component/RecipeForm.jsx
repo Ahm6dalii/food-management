@@ -12,12 +12,9 @@ const RecipeForm = ({ mode }) => {
     const [fileName, setFileName] = useState(""); 
     const [tagValue, setTagValue] = useState('');
     const [categoryValue, setCategoryValue] = useState('');
-<<<<<<< HEAD
-    const [imgInputTouched, setImgInputTouched] = useState('');
-=======
     const [imagePreview, setImagePreview] = useState("");
     const [imageObject, setImageObject] = useState("");
->>>>>>> main
+
 
     const { 
         register, 
@@ -120,10 +117,8 @@ const RecipeForm = ({ mode }) => {
                                     reset(recipeData);
                                     setFileName(recipeData?.imagePath || "");
                                     const file = await createFileFromPath(recipeData?.imagePath || "");
-                                        // console.log(file,"filedfdfdffdfdfdf");
                                     setImageObject(file);
                                     setValue("recipeImage", file); 
-
                                     setTagValue(recipeData?.tag?.id || "");    
                                     setCategoryValue(recipeData?.category[0]?.id || "");
                                 }
@@ -249,11 +244,8 @@ const RecipeForm = ({ mode }) => {
                     </div>
                     
                 </label>
-<<<<<<< HEAD
-                {mode==="Update" &&!imgInputTouched&&fileName&& <div className="d-flex justify-content-center align-items-center"><img width={200} src={imageURL+fileName} alt="Selected" /></div>}
-=======
+
                 {fileName&& <div className="d-flex justify-content-center align-items-center"><img width={200} src={imagePreview?imagePreview:imageURL+fileName} alt="Selected" /></div>}
->>>>>>> main
                 {errors.recipeImage && <div className="text-danger">{errors.recipeImage.message}</div>}
 
                 {/* Action Buttons */}
