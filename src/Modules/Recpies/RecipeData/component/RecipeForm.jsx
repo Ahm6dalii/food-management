@@ -12,6 +12,7 @@ const RecipeForm = ({ mode }) => {
     const [fileName, setFileName] = useState(""); 
     const [tagValue, setTagValue] = useState('');
     const [categoryValue, setCategoryValue] = useState('');
+    const [imgInputTouched, setImgInputTouched] = useState('');
 
     const { 
         register, 
@@ -51,6 +52,9 @@ const RecipeForm = ({ mode }) => {
     // Handle File Change
     const handleFileChange = (e) => {
         const file = e.target.files[0];
+        console.log(file,'file');
+        
+        setImgInputTouched(true);  
         if (file) {
             setFileName(file.name);
             setValue("recipeImage", file); 
@@ -59,7 +63,7 @@ const RecipeForm = ({ mode }) => {
 
     // Form Submission
     const onSubmit = async (data) => {
-        console.log(data);
+        console.log(data,'data');
         const formData = new FormData();
         for(let key in data){
                 formData.append(key, data[key]); 
@@ -87,7 +91,7 @@ const RecipeForm = ({ mode }) => {
             const getRecipeById = async (id) => {
                 try {
                     const res = await axiosInstancePrivate.get(RECEIPE_URL.GET_RECIPE_BY_ID(id));
-                    console.log(res?.data);
+                    console.log(res?.data,'recipe respose');
                     const recipeData=res?.data
                     if (recipeData) {
                                     reset(recipeData);
@@ -217,7 +221,7 @@ const RecipeForm = ({ mode }) => {
                     </div>
                     
                 </label>
-                {mode==="Update" &&fileName&& <div className="d-flex justify-content-center align-items-center"><img width={200} src={imageURL+fileName} alt="Selected" /></div>}
+                {mode==="Update" &&!imgInputTouched&&fileName&& <div className="d-flex justify-content-center align-items-center"><img width={200} src={imageURL+fileName} alt="Selected" /></div>}
                 {errors.recipeImage && <div className="text-danger">{errors.recipeImage.message}</div>}
 
                 {/* Action Buttons */}
