@@ -63,7 +63,7 @@ const RecipeForm = ({ mode }) => {
     };
     const createFileFromPath = async (imagePath) => {
         try {
-            const response = await fetch(imageURL + imagePath); // Ensure full URL
+            const response = await fetch(imageURL + imagePath)
             const blob = await response.blob(); 
             const fileName = imagePath.split("/").pop(); 
             
