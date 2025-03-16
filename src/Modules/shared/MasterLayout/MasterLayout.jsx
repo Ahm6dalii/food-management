@@ -1,7 +1,7 @@
 import React from 'react'
 import { Outlet, ScrollRestoration 	} from 'react-router-dom'
 import Navbar from './../Navbar/Navbar';
-import SideBar from '../Sidebar/Sidebar';
+import SideBar from '../SidBbar/SideBar';
 
 const MasterLayout = ({loginData}) => {
   
