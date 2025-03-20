@@ -20,8 +20,8 @@ const Login = ({SaveLoginData}) => {
     try {
        const res= await axiosInstancePublic.post(USER_URL.LOGIN ,data)
        toastify('success',"Login Successfully")
-        localStorage.setItem('token',res.data.token);
-        SaveLoginData();
+        // localStorage.setItem('token',res?.data?.token);
+        SaveLoginData(res?.data?.token);
        navigate('/dashboard');
     } catch (error) {
       console.log(error);   

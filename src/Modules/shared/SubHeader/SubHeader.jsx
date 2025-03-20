@@ -1,6 +1,7 @@
 import React from 'react'
 
-const SubHeader = ({ title, discribtion, btnName, handleBtnAction, recipes }) => {
+const SubHeader = ({ title, discribtion, btnName, handleBtnAction, recipes, getLoginData }) => {
+ 
 
   const highlighRecipes = (title) => {
     return title.split(/(Recipes)/g).map((word, index) =>
@@ -28,7 +29,7 @@ const SubHeader = ({ title, discribtion, btnName, handleBtnAction, recipes }) =>
               <p className='fs-6 '>{discribtion}</p>
             </div>
             <div className=' mt-3  '>
-        {handleBtnAction && <button onClick={handleBtnAction} className="btn btn-success d-block mx-auto flex gap-4 align-content-center px-5">{btnName} {recipes && <i className='fa fa-long-arrow-alt-right ms-3'></i>}</button>
+        {handleBtnAction&&getLoginData && getLoginData()?.userGroup==="SuperAdmin" && <button onClick={handleBtnAction} className="btn btn-success d-block mx-auto flex gap-4 align-content-center px-5">{btnName} {recipes && <i className='fa fa-long-arrow-alt-right ms-3'></i>}</button>
 }
          </div>
           </div>

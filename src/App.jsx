@@ -19,25 +19,32 @@ import { jwtDecode } from 'jwt-decode';
 import ProtectedRoute from './Modules/shared/ProtectedRoute/ProtectedRoute';
 import Users from './Modules/Users/Users';
 import ChangePassword from './Modules/Authentication/Change-password/ChangePassword';
+import Favorites from './Modules/Favorites/Favorites';
 
 
 function App() {
-  const[loginData,setLoginData]=useState(()=>{
-    if(localStorage.getItem('token')!=null){
-      return jwtDecode(localStorage.getItem('token'))
-    }
-  })
+ 
+  const[loginData,setLoginData]=useState(null)
 
-    const SaveLoginData=()=>{
-      const data=localStorage.getItem('token')
-      const loginDataDecode= jwtDecode(data);
-      console.log(loginDataDecode); 
+
+    const SaveLoginData=(id)=>{
+  
+      localStorage.setItem('token',id);
+      // const data=localStorage.getItem('token')
+      const loginDataDecode= jwtDecode(id);
+      localStorage.setItem('decode',JSON.stringify(loginDataDecode));
       setLoginData(loginDataDecode)
+    }
+
+    const getLoginData=()=>{
+      if(localStorage.getItem('decode')!=null){
+        return JSON.parse(localStorage.getItem('decode'))
+      }
     }
 
     useEffect(()=>{
       if(localStorage.getItem('token')!=null){
-        SaveLoginData()}
+        SaveLoginData(localStorage.getItem('token'))}
     },[])
 
 const router=createBrowserRouter([
@@ -48,15 +55,16 @@ const router=createBrowserRouter([
     {path:'reset-password',element:<ResetPassword/>},
     {path:'verify-account',element:<VerifyAccount/>},
   ]},
-  {path:'/dashboard',element:<ProtectedRoute><MasterLayout loginData={loginData} saveLoginData={SaveLoginData} /></ProtectedRoute>,errorElement:<NotFound/>,children:[
-    {index:true,element:<Dashboard/>},
+  {path:'/dashboard',element:<ProtectedRoute><MasterLayout getLoginData={getLoginData}  loginData={loginData} saveLoginData={SaveLoginData} /></ProtectedRoute>,errorElement:<NotFound/>,children:[
+    {index:true,element:<Dashboard getLoginData={getLoginData}  loginData={loginData} />},
     {path:'users',element:<Users/>},
-    {path:'categories',element:<CategoriesList/>},
+    {path:'categories',element:<CategoriesList getLoginData={getLoginData} />},
     {path:'categories-data',element:<CategoriesData/>},
-    {path:'recipies',element:<RecipeList/> },
+    {path:'recipies',element:<RecipeList getLoginData={getLoginData}/> },
     {path:'recipies-data/new-recipe',element:<RecipeData/>},
     {path:'recipies-data/:id',element:<RecipeData/>},
     {path:'change-password',element:<ChangePassword/>},
+    {path:'favorites',element:<Favorites/>},
   ]}
 ])
 

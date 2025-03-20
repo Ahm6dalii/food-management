@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import Paginations from '../../shared/Pagination/Pagination';
 import RecipeViewModal from '../RecipeViewModal';
 
-export const RecipeList = () => {
+export const RecipeList = ({loginData,getLoginData}) => {
   const [recipes, setRecipes] = useState([]);
   const [tags, setTags] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -136,7 +136,7 @@ export const RecipeList = () => {
     <div className='overflow-hidden'>
 
       <Header title="Recipes Items" discribtion="You can now add your items that any user can order it from the Application and you can edit" logo={logo} />
-      <SubHeader title="Recipe Table Details" discribtion="You can check all details" btnName="Add New Item" handleBtnAction={handleAddRecipe} />
+      <SubHeader title="Recipe Table Details" getLoginData={getLoginData} discribtion="You can check all details" btnName="Add New Item" handleBtnAction={handleAddRecipe} />
 
       <div className='searchSection container-fluid my-3'>
         <div className="row">
@@ -207,9 +207,11 @@ export const RecipeList = () => {
                 <td data-label="Action" className='dropup-center dropup'>
                   <i className="fa fa-ellipsis text-secondary dropup-center dropup cursor-pointer" data-bs-toggle="dropdown" />
                   <ul className="dropdown-menu">
-                    <li onClick={() => handleViewRecipe(recipe)}><a className="dropdown-item d-flex align-content-center gap-2 cursor-pointer" ><i className='fa-solid fa-eye text-success'></i> View</a></li>
-                    <li onClick={() => handleUpdateRecipe(recipe?.id)}><a className="dropdown-item  cursor-pointer d-flex align-content-center gap-2" ><i className="fa-solid fa-pen-to-square text-success"></i> Edit</a></li>
-                    <li onClick={() => recipeId.current = recipe?.id}><a className="dropdown-item cursor-pointer d-flex align-content-center gap-2" data-bs-toggle="modal" data-bs-target="#exampleModal" ><i className="fa-solid fa-trash-can text-success"></i>delete</a></li>
+                  { getLoginData()?.userGroup === "SystemUser"? <li onClick={() => handleViewRecipe(recipe)}><a className="dropdown-item d-flex align-content-center gap-2 cursor-pointer" ><i className='fa-solid fa-eye text-success'></i> View</a></li>
+                   :<>
+                                     <li onClick={() => handleUpdateRecipe(recipe?.id)}><a className="dropdown-item  cursor-pointer d-flex align-content-center gap-2" ><i className="fa-solid fa-pen-to-square text-success"></i> Edit</a></li>
+                                     <li onClick={() => recipeId.current = recipe?.id}><a className="dropdown-item cursor-pointer d-flex align-content-center gap-2" data-bs-toggle="modal" data-bs-target="#exampleModal" ><i className="fa-solid fa-trash-can text-success"></i>delete</a></li>
+                   </>}
                   </ul>
                 </td>
               </tr>
