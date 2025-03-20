@@ -1,9 +1,25 @@
 import React, { useEffect } from 'react';
 import { Modal, Button } from 'react-bootstrap';
-import { imageURL } from '../../service/api/apiConfig';
+import { imageURL, USER_RECEIPE_URL } from '../../service/api/apiConfig';
 import notfound from '../../assets/nodata.png';
+import { axiosInstancePrivate } from '../../service/api/apiInstance';
+import { toastify } from '../../service/toastifiy';
 const RecipeViewModal = ({ show, onHide, data }) => {
+    const [loading, setLoading] = React.useState(false);
 
+    const addToFavorites = async(id) => {
+        setLoading(true);
+       try {
+                const res = await axiosInstancePrivate.post(USER_RECEIPE_URL.ADD_USER_RECIPE, {   recipeId:id  });
+                console.log(res?.data);
+              toastify("success", "Recipe added to favorites");
+              onHide();
+            } catch (error) {
+                toastify("error", error?.response?.data?.message || "Failed to get tags");
+            }finally{
+                setLoading(false);
+            }
+    }
 
 
     return (
@@ -33,7 +49,7 @@ const RecipeViewModal = ({ show, onHide, data }) => {
                 )}
             </Modal.Body>
             <Modal.Footer className='border-0'>
-                <Button variant="secondary" onClick={onHide}>Close</Button>
+                <Button variant="secondary" disabled={loading} onClick={()=>addToFavorites(data?.id)}>{loading ? <i className="fa fa-spinner fa-spin"></i> : "Add to Favorites"}</Button>
             </Modal.Footer>
         </Modal>
     );

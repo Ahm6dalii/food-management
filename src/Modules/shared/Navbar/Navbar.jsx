@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import avatar from '../../../assets/avatar.png'
-const Navbar = ({loginData}) => {
-  console.log(loginData);
+const Navbar = ({getLoginData}) => {
+ 
+  console.log(getLoginData(),'dsDDDDDDDDDDDDDdsd');
 
   return (
     <div className='pt-1 pb-3'>
@@ -12,9 +13,9 @@ const Navbar = ({loginData}) => {
           </button>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav ms-auto  align-items-center gap-2">
-              <span className='rounded-circle overflow-auto '><img className='w-100' src={avatar} alt="avatar" /></span>
+              <span className='rounded-circle overflow-auto '><img className='w-100' src={ getLoginData()?.profileImage?? avatar} alt="avatar" /></span>
               <li className="nav-item  ">
-                <a className="nav-link active fw-semibold flex bg-body-tertiary" aria-current="page" >{loginData?.userEmail??"username"} <i className='fa fa-angle-down ms-5'></i></a>
+                <a className="nav-link active fw-semibold flex bg-body-tertiary" aria-current="page" >{ getLoginData()?.userName??"username"} <i className='fa fa-angle-down ms-5'></i></a>
               </li>
             </ul>
             <div className='ms-3 position-relative'>

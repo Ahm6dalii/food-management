@@ -9,15 +9,20 @@ export const axiosInstancePublic = axios.create({
 //private 
  export const axiosInstancePrivate = axios.create({
     baseURL:baseURL,
-    headers:{
-      Authorization:localStorage.getItem('token'),
-      }
+   
  })
-//private used in add recipe form data
- export const axiosInstancePrivateFormData = axios.create({
-    baseURL:baseURL,
-    headers:{
-      Authorization:localStorage.getItem('token'),
-      "Content-Type":"multipart/form-data"
-      }
- })
+
+ axiosInstancePrivate.interceptors.request.use(
+   (config) => {      
+     const token = localStorage.getItem("token"); // Get latest token
+     if (token) {
+       config.headers.Authorization = `${token}`;
+     } else {
+       delete config.headers.Authorization; // Remove Authorization if no token
+     }
+     return config;
+   },
+   (error) => {
+     return Promise.reject(error);
+   }
+ );

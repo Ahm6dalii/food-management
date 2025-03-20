@@ -69,6 +69,13 @@
     width: 100%;
     max-width: 600px;
 }
+.vh-80{
+    height: 80vh;
+}
+
+.aspect-1 {
+ aspect-ratio: 1/1;
+}
 /* ! header  */
 .header-container{
     background-image: url('../src/assets/images/headerBg.png');
