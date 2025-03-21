@@ -12,7 +12,6 @@ import { axiosInstancePrivate } from '../../../service/api/apiInstance';
 import { useNavigate } from 'react-router-dom';
 import Paginations from '../../shared/Pagination/Pagination';
 import RecipeViewModal from '../RecipeViewModal';
-import { set } from 'react-hook-form';
 
 export const RecipeList = ({loginData,getLoginData}) => {
   const [recipes, setRecipes] = useState([]);

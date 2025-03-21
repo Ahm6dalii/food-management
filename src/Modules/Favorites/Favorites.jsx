@@ -1,13 +1,17 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect,  useState } from 'react'
 import { axiosInstancePrivate } from '../../service/api/apiInstance';
 import { imageURL, USER_RECEIPE_URL } from '../../service/api/apiConfig';
 import ImgNotFound from '../../assets/nodata.png'
 import { toastify } from '../../service/toastifiy';
 import NoData from '../shared/NoData/NoData';
 import LoadingScreen from '../shared/LoadingScreen/LoadingScreen';
+import ConfirmationDelete from '../shared/ConfirmationDelete/ConfirmationDelete';
 const Favorites = () => {
     const [ Favorites, setFavorites ] = useState([])
         const [isLoading, setLoading] = useState(false);
+        const [recipeId, setRecipeId] = useState(false);
+          const [isDeleteLoading, setIsDeleteLoading] = useState(false)
+        //  const recipeId = useRef()
     const getFavorites = async () => {
         setLoading(true);
         try {
@@ -23,15 +27,18 @@ const Favorites = () => {
 
     const removeFromFavorites = async(id) => {
         setLoading(true);
+        setIsDeleteLoading(true)        
         try {
             const res = await axiosInstancePrivate.delete(USER_RECEIPE_URL.DELETE_USER_RECIPE(id));
             console.log(res?.data);
+            setFavorites([])
             getFavorites();
             toastify("success", "Recipe removed from favorites");
         } catch (error) {
             toastify("error", error?.response?.data?.message || "Failed to get favorites");
         }finally{
             setLoading(false);
+            setIsDeleteLoading(false)
         }
     }
 
@@ -52,7 +59,7 @@ const Favorites = () => {
     }
     return (
         <div className='container-fluid'>
-            <div className="row">
+            <div className="row g-2">
 
               { Favorites?.data?.length > 0 && !isLoading ? Favorites?.data?.map((item, index) =>(    
                    <div key={index} className="col-12 col-sm-6 col-md-4 ">
@@ -65,7 +72,8 @@ const Favorites = () => {
                        <div className="card-body">
                            <h5 className="card-title">{item?.recipe?.name}</h5>
                            <p className="card-text">{item?.recipe?.description}.</p>
-                           <a onClick={() => removeFromFavorites(item?.id)} className="btn p-1 bg-white position-absolute top-0 end-0 m-2"><i className='fa fa-heart text-success'></i></a>
+                           <span  onClick={() => setRecipeId(item?.id)} data-bs-toggle="modal" data-bs-target="#exampleModal"  className="btn p-1 bg-white position-absolute top-0 end-0 m-2"><i className='fa fa-heart text-success'></i></span>
+                           {/* <a  data-bs-toggle="modal" data-bs-target="#exampleModal" onClick={() => removeFromFavorites(item?.id)} className="btn p-1 bg-white position-absolute top-0 end-0 m-2"><i className='fa fa-heart text-success'></i></a> */}
                        </div>
                    </div>
                </div>
@@ -73,6 +81,11 @@ const Favorites = () => {
              )
              ):  <div className='d-flex justify-content-center align-items-center vh-80 '>{isLoading ?<LoadingScreen />: <div className='text-center'><NoData /></div>} </div> }
             </div>
+
+
+            
+          <ConfirmationDelete id={recipeId} handleDelete={removeFromFavorites} title={"Recipe"}  isloading={isDeleteLoading}/>
+            
         </div>
     )
 }

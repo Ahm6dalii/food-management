@@ -1,10 +1,18 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import Pagination from "react-bootstrap/Pagination";
 
 function Paginations({ pageNumber, totalNumberOfPages, getNewPage }) {
   if (totalNumberOfPages <= 1) return null;
 
-  const maxVisiblePages = 5;
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 576);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 576);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const maxVisiblePages = isMobile ? 3 : 5;
   let startPage = Math.max(2, pageNumber - Math.floor(maxVisiblePages / 2));
   let endPage = Math.min(totalNumberOfPages - 1, startPage + maxVisiblePages - 1);
 
@@ -14,9 +22,8 @@ function Paginations({ pageNumber, totalNumberOfPages, getNewPage }) {
 
   const pageNumbers = Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i);
 
-
   return (
-    <div className="pagination d-flex justify-content-center">
+    <div className="pagination d-flex justify-content-center flex-wrap">
       <Pagination>
         <Pagination.First onClick={() => getNewPage(1)} disabled={pageNumber === 1} />
         <Pagination.Prev onClick={() => getNewPage(pageNumber - 1)} disabled={pageNumber === 1} />
@@ -25,7 +32,7 @@ function Paginations({ pageNumber, totalNumberOfPages, getNewPage }) {
           1
         </Pagination.Item>
 
-        {startPage > 2 && <Pagination.Ellipsis disabled />}
+        {!isMobile && startPage > 2 && <Pagination.Ellipsis disabled />}
 
         {pageNumbers.map((item) => (
           <Pagination.Item key={item} active={item === pageNumber} onClick={() => getNewPage(item)}>
@@ -33,7 +40,7 @@ function Paginations({ pageNumber, totalNumberOfPages, getNewPage }) {
           </Pagination.Item>
         ))}
 
-        {endPage < totalNumberOfPages - 1 && <Pagination.Ellipsis disabled />}
+        {!isMobile && endPage < totalNumberOfPages - 1 && <Pagination.Ellipsis disabled />}
 
         {totalNumberOfPages > 1 && (
           <Pagination.Item active={pageNumber === totalNumberOfPages} onClick={() => getNewPage(totalNumberOfPages)}>
