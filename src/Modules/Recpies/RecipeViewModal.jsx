@@ -4,15 +4,21 @@ import { imageURL, USER_RECEIPE_URL } from '../../service/api/apiConfig';
 import notfound from '../../assets/nodata.png';
 import { axiosInstancePrivate } from '../../service/api/apiInstance';
 import { toastify } from '../../service/toastifiy';
+import ConfrimationAdd from '../shared/ConfirmationAdd/ConfrimationAdd';
 const RecipeViewModal = ({ show, onHide, data }) => {
     const [loading, setLoading] = React.useState(false);
+     
+    const [showAddModal, setShowAddModal] = React.useState(false);
 
+    const handleClose = () => setShowAddModal(false);
+    const handleShow = () => setShowAddModal(true);
     const addToFavorites = async(id) => {
         setLoading(true);
        try {
                 const res = await axiosInstancePrivate.post(USER_RECEIPE_URL.ADD_USER_RECIPE, {   recipeId:id  });
                 console.log(res?.data);
               toastify("success", "Recipe added to favorites");
+              handleClose()
               onHide();
             } catch (error) {
                 toastify("error", error?.response?.data?.message || "Failed to get tags");
@@ -23,6 +29,8 @@ const RecipeViewModal = ({ show, onHide, data }) => {
 
 
     return (
+        <>
+        
         <Modal show={show} onHide={onHide} size="lg" centered>
             <Modal.Header className='border-0' closeButton>
                 <Modal.Title>Recipe Details</Modal.Title>
@@ -49,9 +57,15 @@ const RecipeViewModal = ({ show, onHide, data }) => {
                 )}
             </Modal.Body>
             <Modal.Footer className='border-0'>
-                <Button variant="secondary" disabled={loading} onClick={()=>addToFavorites(data?.id)}>{loading ? <i className="fa fa-spinner fa-spin"></i> : "Add to Favorites"}</Button>
+                <Button variant="secondary" disabled={loading} onClick={handleShow}>Add to Favorites</Button>
             </Modal.Footer>
         </Modal>
+
+                 <ConfrimationAdd id={data?.id} handleAdd={addToFavorites} show={showAddModal} handleClose={handleClose} title={"Recipe"}  isloading={loading}/>
+         
+        
+        </>
+        
     );
 }
 
